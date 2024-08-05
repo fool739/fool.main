@@ -1,0 +1,42 @@
+---
+import "../styles/global.css"
+const { title } = Astro.props
+---
+
+<html lang="en">
+    <head>
+        <title>"FOOL"</title>
+        <meta name="title" content="FOOL"/>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    </head>
+
+    <body class="bg-neutral-950 text-zinc-50"
+        <div id="wrapper">
+            <nav class="flex justify-between justify-self-auto underline decoration-4 underline-offset-4 items-center w-full cursor-pointer select-none py-4">
+                <a href="/commandments" class="font-bold text-lg">BREATH LIFE INTO ALL YOU DO.</a>
+                <script>
+                    import { setupTextCycle } from '../scripts/cycleText';
+                    document.addEventListener('DOMContentLoaded', setupTextCycle);
+                </script>
+                <a href="/" class="text-lg font-bold">HOME</a> 
+            </nav>
+            
+        <slot />
+
+    <footer>
+        <div class="flex my-12 font-bold text-lg justify-center items-center underline decoration-2 underline-offset-4">
+            <a href="#" class="px-4">github.</a>
+            <a href="#" class="px-4">twitter.</a>
+            <a href="#" class="px-4">instagram.</a>
+            <a href="#" class="px-4">discord.</a>
+          </div>
+    </footer>
+        </div>
+    </body>
+
+</html>
+
+
+
+
