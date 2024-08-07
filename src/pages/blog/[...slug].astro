@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Prose from '../../components/prose.astro'
+import Base from '../../layouts/base.astro';
+
+export async function getStaticPaths() {
+    const blogEntries = await getCollection('blog');
+    return blogEntries.map(entry => ({
+        params: { slug: entry.slug }, props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Base>
+    <article>
+            <h1 class="text-4xl font-bold mb-1">{entry.data.title}</h1>
+            <h2 class="text-xl font-bold mb-1">{entry.data.description}</h2>
+            <p class="text-zinc-500 mb-2">{entry.data.date}</p>
+            <hr class="h-1 mb-4 bg-zinc-50">
+        <Prose>
+        <Content />
+    </Prose>
+    </article>
+</Base>

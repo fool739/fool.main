@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/base.astro';
+import Jester from '../../components/jester.astro';
+import { getCollection } from 'astro:content';
+
+let posts = await getCollection('blog');
+let sortAscending = true;
+
+// Sort
+posts = posts.sort((a, b) => {
+    const dateA = new Date(a.data.date).getTime();
+    const dateB = new Date(b.data.date).getTime();
+    return sortAscending ? dateA - dateB : dateB - dateA;
+});
+---
+
+<Base>
+    <div class="jester block w-full my-5"><Jester /></div>
+    
+    <hr class="h-2 my-4 bg-zinc-50">
+
+    <div class="text-center">
+        <h1 class="text-3xl font-bold mb-4">POST</h1>
+        
+        <button id="sortButton" class="mb-4 font-semibold text-lg">
+            SORT BY DATE 
+            <span id="sortIcon">▼</span>
+        </button>
+
+        <ul id="postList">
+            {posts.map((post) => ( 
+                <li class="mb-4">
+                    <a href={`/blog/${post.slug}/`} class="text-zinc-50 font-semibold text-xl underline-offset-4 underline hover:text-gray-300">
+                        {post.data.title}
+                    </a>
+                    <p class="text-sm text-gray-400">{post.data.date}</p>
+                </li>
+            ))}
+        </ul>
+    </div>
+
+    <script>
+        const sortButton = document.getElementById('sortButton');
+        const sortIcon = document.getElementById('sortIcon');
+        const postList = document.getElementById('postList');
+
+        if (sortButton && sortIcon && postList) {
+            let ascending = true;
+
+            sortButton.addEventListener('click', () => {
+                ascending = !ascending;
+                sortIcon.textContent = ascending ? '▼' : '▲';
+                
+                const posts = Array.from(postList.children);
+                posts.sort((a, b) => {
+                    const dateA = new Date(a.querySelector('p')?.textContent || '').getTime();
+                    const dateB = new Date(b.querySelector('p')?.textContent || '').getTime();
+                    return ascending ? dateA - dateB : dateB - dateA;
+                });
+
+                postList.innerHTML = '';
+                posts.forEach(post => postList.appendChild(post));
+            });
+        }
+    </script>
+</Base>
