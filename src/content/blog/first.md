@@ -1,5 +1,5 @@
 ---
-title: "1st Post"
+title: "1st post"
 description: "Testing markdown."
 date: 08/07/2024
 ---
