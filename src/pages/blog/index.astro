@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/base.astro';
-import Jester from '../../components/jester.astro';
+import Blog from '../../components/blog.astro';
 import { getCollection } from 'astro:content';
 
 let posts = await getCollection('blog');
@@ -15,29 +15,27 @@ posts = posts.sort((a, b) => {
 ---
 
 <Base>
-    <div class="jester block w-full my-5"><Jester /></div>
+    <div class="jester block w-full my-5"><Blog /></div>
     
     <hr class="h-2 my-4 bg-zinc-50">
 
-    <div class="text-center">
-        <h1 class="text-3xl font-bold mb-4">POST</h1>
-        
-        <button id="sortButton" class="mb-4 font-semibold text-lg">
-            SORT BY DATE 
-            <span id="sortIcon">▼</span>
-        </button>
+   <div class="text-center">
 
+    <button id="sortButton" class="mb-4 font-semibold underline decoration-2 underline-offset-2 text-2xl">
+        POST <span id="sortIcon">▼</span>
+    </button>
         <ul id="postList">
             {posts.map((post) => ( 
-                <li class="mb-4">
-                    <a href={`/blog/${post.slug}/`} class="text-zinc-50 font-semibold text-xl underline-offset-4 underline hover:text-gray-300">
-                        {post.data.title}
-                    </a>
+                <li class="mb-4 hover:bg-zinc-800 transition-colors durations-200">
+                    <a href={`/blog/${post.slug}/`} class="text-zinc-50 font-semibold text-xl">
+                        {post.data.title}</a>
+                    <p class="text-sm">{post.data.description}</p>
                     <p class="text-sm text-gray-400">{post.data.date}</p>
                 </li>
             ))}
         </ul>
     </div>
+   </div>
 
     <script>
         const sortButton = document.getElementById('sortButton');
