@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/base.astro';
+import Search from '../../components/search.astro';
 import Blog from '../../components/blog.astro';
 import { getCollection } from 'astro:content';
 
@@ -15,28 +16,34 @@ posts = posts.sort((a, b) => {
 ---
 
 <Base>
-    <div class="jester block w-full my-5"><Blog /></div>
-    
+
+    <Blog />
     <hr class="h-2 my-4 bg-zinc-50">
+  
+    <Search />
 
-   <div class="text-center">
+    <hr class="mb-8 bg-slate-200">
 
-    <button id="sortButton" class="mb-4 font-semibold underline decoration-2 underline-offset-2 text-2xl">
-        POST <span id="sortIcon">▼</span>
-    </button>
-        <ul id="postList">
-            {posts.map((post) => ( 
-                <li class="mb-4 hover:bg-zinc-800 transition-colors durations-200">
-                    <a href={`/blog/${post.slug}/`} class="text-zinc-50 font-semibold text-xl">
-                        {post.data.title}</a>
-                    <p class="text-sm">{post.data.description}</p>
-                    <p class="text-sm text-gray-400">{post.data.date}</p>
-                </li>
-            ))}
-        </ul>
+    <div class="text-center mb-4">
+        <button id="sortButton" class="font-semibold text-base">
+            SORT <span id="sortIcon">▼</span>
+        </button>
     </div>
-   </div>
 
+    
+    <div id="postList" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        {posts.map(post => (
+            <div class="group border border-zinc-700 hover:border-slate-300 p-2 md:p-4 hover:bg-zinc-800 transition-colors duration-200">
+                <a href={`/blog/${post.slug}`} class="block">
+                    <p class="font-semibold text-base text-zinc-50 md:text-xl group-hover:underline">{post.data.title}</p>
+                    <p class="text-lg text-zinc-200">{post.data.description}</p>
+                    <p class="text-xs text-zinc-400">{post.data.date}</p>
+                </a>
+            </div>
+        ))}
+    </div>
+
+   
     <script>
         const sortButton = document.getElementById('sortButton');
         const sortIcon = document.getElementById('sortIcon');
@@ -51,8 +58,8 @@ posts = posts.sort((a, b) => {
                 
                 const posts = Array.from(postList.children);
                 posts.sort((a, b) => {
-                    const dateA = new Date(a.querySelector('p')?.textContent || '').getTime();
-                    const dateB = new Date(b.querySelector('p')?.textContent || '').getTime();
+                    const dateA = new Date(a.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
+                    const dateB = new Date(b.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
                     return ascending ? dateA - dateB : dateB - dateA;
                 });
 

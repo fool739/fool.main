@@ -15,17 +15,23 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
+
 <Base>
-
-    <div class="jester block w-full my-5"><Blog /></div>
-
-    <article>
-            <h1 class="text-3xl font-bold mb-1">{entry.data.title}</h1>
-            <h2 class="text-xl font-bold mb-1">{entry.data.description}</h2>
-            <p class="text-zinc-500 mb-2">{entry.data.date}</p>
-            <hr class="mb-4 bg-zinc-50">
+    <div class="w-full my-5">
+    <article class="max-w-2xl mx-auto px-4 mt-8">
+        <h1 class="text-3xl font-bold mb-2">{entry.data.title}</h1>
+        <h2 class="text-xl text-zinc-300 mb-2">{entry.data.description}</h2>
+        <div class="flex items-center space-x-4 mb-4 text-zinc-400 text-sm">
+            <p>{entry.data.date}</p>
+            <div class="flex space-x-2">
+                {entry.data.tags.map((tag: string) => (
+                    <a href={`/tags/${tag}`} class="hover:underline">#{tag}</a>
+                ))}
+            </div>
+        </div>
+        <hr class="mb-8 border-zinc-800">
         <Prose>
-        <Content />
-    </Prose>
+            <Content />
+        </Prose>
     </article>
 </Base>
