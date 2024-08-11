@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/base.astro';
+import Blog from '../../components/blog.astro'
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+
+  return uniqueTags.map(tag => {
+    const filteredPosts = allPosts.filter(post => post.data.tags.includes(tag));
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Base>
+
+  <Blog /> 
+  
+  <hr class="h-2 my-4 bg-zinc-50">
+
+  <h1 class="text-2xl font-bold mb-4">
+    Posts tagged with <span class="underline underline-offset-4">{tag}</span>
+  </h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+  {posts.map(post => (
+    <div class="group border border-zinc-700 hover:border-slate-300 p-2 md:p-4 hover:bg-zinc-800 transition-colors duration-200">
+      <a href={`/blog/${post.slug}`} class="block">
+        <p class="font-semibold text-base text-zinc-50 md:text-xl group-hover:underline">{post.data.title}</p>
+        <p class="text-lg text-zinc-200">{post.data.description}</p>
+        <p class="text-xs text-zinc-400">{post.data.date}</p>
+      </a>
+    </div>
+  ))}
+</div>
