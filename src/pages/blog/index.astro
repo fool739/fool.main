@@ -5,13 +5,13 @@ import Blog from '../../components/blog.astro';
 import { getCollection } from 'astro:content';
 
 let posts = await getCollection('blog');
-let sortAscending = true;
+let sortDescending = true;  // Changed to descending (most recent first)
 
 // Sort
 posts = posts.sort((a, b) => {
     const dateA = new Date(a.data.date).getTime();
     const dateB = new Date(b.data.date).getTime();
-    return sortAscending ? dateA - dateB : dateB - dateA;
+    return sortDescending ? dateB - dateA : dateA - dateB;  // Changed the order
 });
 ---
 
@@ -50,17 +50,17 @@ posts = posts.sort((a, b) => {
         const postList = document.getElementById('postList');
 
         if (sortButton && sortIcon && postList) {
-            let ascending = true;
+            let descending = true;  // Start with descending order (most recent first)
 
             sortButton.addEventListener('click', () => {
-                ascending = !ascending;
-                sortIcon.textContent = ascending ? '▼' : '▲';
+                descending = !descending;
+                sortIcon.textContent = descending ? '▼' : '▲';
                 
                 const posts = Array.from(postList.children);
                 posts.sort((a, b) => {
                     const dateA = new Date(a.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
                     const dateB = new Date(b.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
-                    return ascending ? dateA - dateB : dateB - dateA;
+                    return descending ? dateB - dateA : dateA - dateB;  // Changed the order
                 });
 
                 postList.innerHTML = '';
