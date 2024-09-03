@@ -33,7 +33,7 @@ posts = posts.sort((a, b) => {
     
     <div id="postList" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
         {posts.map(post => (
-            <div class="group border border-zinc-700 hover:border-slate-300 p-2 md:p-4 hover:bg-zinc-800 transition-colors duration-200">
+            <div class="group border-4 border-zinc-700 hover:border-zinc-50 p-2 md:p-4 hover:bg-zinc-800 transition-colors duration-200">
                 <a href={`/blog/${post.slug}`} class="block">
                     <p class="font-semibold text-base text-zinc-50 md:text-xl group-hover:underline">{post.data.title}</p>
                     <p class="text-lg text-zinc-200">{post.data.description}</p>
