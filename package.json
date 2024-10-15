@@ -10,10 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.8.2",
-    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/tailwind": "^5.1.1",
     "@fontsource/ibm-plex-mono": "^5.0.13",
-    "astro": "^4.12.2",
+    "astro": "^4.15.11",
     "main": "file:",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.5.3"
