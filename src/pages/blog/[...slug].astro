@@ -1,8 +1,10 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
-import Prose from '../../components/prose.astro'
+import Prose from '../../components/prose.astro';
 import Base from '../../layouts/base.astro';
-import Blog from '../../components/blog.astro'
+// Remove the Blog import if it's not used in this file
+// import Blog from '../../components/blog.astro';
 
 export async function getStaticPaths() {
     const blogEntries = await getCollection('blog');
@@ -10,6 +12,10 @@ export async function getStaticPaths() {
         params: { slug: entry.slug }, props: { entry },
     }));
 }
+
+type Props = {
+    entry: CollectionEntry<'blog'>;
+};
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
@@ -34,5 +40,5 @@ const { Content } = await entry.render();
             <Content />
         </Prose>
     </article>
-    <a href="/blog" class="text-slate-300-">[Back to home]</a>
+    <a href="/blog" class="text-slate-300 hover:font-extrabold pt-4">[Back to home]</a>
 </Base>
