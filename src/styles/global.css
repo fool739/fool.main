@@ -1,30 +1,6 @@
-html,body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: monospace;
-    
-}
-
-#wrapper {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 1.5rem;
-}
-
-.jester-ascii {
-    font-size: 0.8rem;
-    line-height: 1;
-    white-space: pre;
-    text-align: center;
-}
-
-@media (max-width: 338px) {
-    .jester-ascii {
-        font-size: calc(0.8rem * (100vw / 338));
-    }
-}
-
-a:hover {
-    color: rgb(177, 193, 214);
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: monospace;
 }
