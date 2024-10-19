@@ -1,6 +1,0 @@
----
-title: "MODERN SUFFERING."
-date: 2024-10-18
-description: "A SHORT EXERPT ON HOW WE EXPERIENCE PAIN IN THE MODERN AGE."
----
-# #WIP

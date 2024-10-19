@@ -2,13 +2,8 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/base.astro';
 import Prose from '../../components/prose.astro'
-import Prose from '../../components/prose.astro'
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
-  return blogEntries.map(entry => ({
-    params: { slug: entry.slug }, props: { entry },
-  }));
   const blogEntries = await getCollection('blog');
   return blogEntries.map(entry => ({
     params: { slug: entry.slug }, props: { entry },
@@ -29,7 +24,7 @@ const { Content } = await entry.render();
         </div>
         <hr class="h-2 my-4 bg-zinc-50">
         <Prose>
-          <Content />
+            <Content />
         </Prose>
     </article>
 </Base>
