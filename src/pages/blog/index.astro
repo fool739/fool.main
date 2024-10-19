@@ -8,17 +8,21 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 <Base title="BLOG">
 
-<intro class="hover:animate-pulse mb-2 font-bold">
-  <h1>BLOG POST.</h1>
-  <h2>RECORDS IMMEMORIAL.</h2>
+<intro class="hover:animate-pulse font-bold text-left"> 
+    <h1>BLOG POST.</h1>
+    <h2>RECORDS IMMEMORIAL.</h2>
 </intro>
-  <ul>
+
+<div class="flex flex-col items-center mt-2">
+  <div class="underline decoration-2 max-w-xs w-full">
     {posts.map((post) => (
-      <li class="mb-2">
-        <a class="underline decoration-2" href={`/blog/${post.slug}`}>{post.data.title}</a>
-        <time class="text-zinc-400">{post.data.date.toLocaleDateString()}</time>
+      <div class="mb-4 text-left">
+        <a class="hover:font-semibold block" href={`/blog/${post.slug}`}>{post.data.title.toUpperCase()}</a>
         <p class="text-zinc-300">{post.data.description}</p>
-      </li>
+        <time class="text-zinc-400 block">{post.data.date.toLocaleDateString()}</time>
+      </div>
     ))}
-  </ul>
+  </div>
+</div>
+
 </Base>

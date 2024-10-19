@@ -15,18 +15,17 @@ const { Content } = await entry.render();
 ---
 
 <Base title={entry.data.title}>
-  <article class="max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold mb-2">{entry.data.title.toUpperCase()}</h1>
-    <p class="text-xl font-bold text-zinc-300">{entry.data.description}</p>
-    <time class="text-sm text-zinc-400 block mb-2">{entry.data.date.toLocaleDateString()}</time>
-    <hr class="mb-4 bg-zinc-50">
-    <div class="content text-zinc-300 space-y-4">
-
-    <Prose> 
-      <Content />
-    </Prose>
-
+  <article class="flex flex-col items-center">
+    <div class="max-w-xs w-full">
+      <h1 class="text-2xl font-bold mb-2">{entry.data.title.toUpperCase()}</h1>
+      <p class="text-xl font-bold text-zinc-300">{entry.data.description}</p>
+      <time class="text-sm text-zinc-400 block mb-2">{entry.data.date.toLocaleDateString()}</time>
+      <hr class="mb-4 bg-zinc-50">
+      <div class="content text-zinc-300 space-y-4">
+        <Prose>
+          <Content />
+        </Prose>
+      </div>
     </div>
   </article>
-  
 </Base>
