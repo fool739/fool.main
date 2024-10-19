@@ -1,6 +1,7 @@
 ---
 title: "MODERN SUFFERING."
-date: 2024-10-18
+date: 2024-10-17
 description: "A SHORT EXERPT ON HOW WE EXPERIENCE PAIN IN THE MODERN AGE."
+tags: ["wip",]
 ---
-# #WIP
+# WORK IN PROGRESS.
