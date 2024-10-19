@@ -6,31 +6,23 @@ const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Base>
-    <div class="w-full my-5">
-        <div class="max-w-2xl mx-auto px-4">
-            <h1 class="text-3xl font-bold mb-4">BLOG POSTS</h1>
+<Base title="BLOG">
 
-            <div id="postList">
-                {posts.map((post) => (
-                    <article class="mb-8 post-item">
-                        <p class="font-bold mb-2">
-                            <a href={`/blog/${post.slug}`} class="underline hover:decoration-2 hover:underline">{post.data.title}</a>
-                        </p>
-                        <p class="text-zinc-300 mb-2">{post.data.description}</p>
-                        <div class="flex items-center space-x-4 mb-2 text-zinc-400 text-sm">
-                            <p>{post.data.date.toLocaleDateString()}</p>
-                        </div>
-                        {post.data.tags && (
-                            <div class="flex flex-wrap gap-2">
-                                {post.data.tags.map((tag: string) => (
-                                    <span class="bg-neutral-800 text-zinc-300 px-2 py-1 text-xs rounded">#{tag}</span>
-                                ))}
-                            </div>
-                        )}
-                    </article>
-                ))}
-            </div>
-        </div>
-    </div>
+<intro class="hover:animate-pulse font-bold text-left"> 
+    <h1>BLOG POST.</h1>
+    <h2>RECORDS IMMEMORIAL.</h2>
+</intro>
+
+<div class="flex flex-col items-center mt-2">
+  <div class="decoration-2 max-w-xs w-full">
+    {posts.map((post) => (
+      <div class="mb-4 text-left">
+        <a class="underline decoration-2 hover:font-semibold block" href={`/blog/${post.slug}`}>{post.data.title.toUpperCase()}</a>
+        <p class="text-zinc-300">{post.data.description}</p>
+        <time class="text-zinc-400 block">{post.data.date.toLocaleDateString()}</time>
+      </div>
+    ))}
+  </div>
+</div>
+
 </Base>
