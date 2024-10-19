@@ -14,10 +14,10 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 </intro>
 
 <div class="flex flex-col items-center mt-2">
-  <div class="underline decoration-2 max-w-xs w-full">
+  <div class="decoration-2 max-w-xs w-full">
     {posts.map((post) => (
       <div class="mb-4 text-left">
-        <a class="hover:font-semibold block" href={`/blog/${post.slug}`}>{post.data.title.toUpperCase()}</a>
+        <a class="underline decoration-2 hover:font-semibold block" href={`/blog/${post.slug}`}>{post.data.title.toUpperCase()}</a>
         <p class="text-zinc-300">{post.data.description}</p>
         <time class="text-zinc-400 block">{post.data.date.toLocaleDateString()}</time>
       </div>
