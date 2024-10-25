@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const recentPosts = sortedPosts.slice(0, 3); // Number of Items
+---
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+    <div class="border-4 border-zinc-50 p-1 md:p-2">
+        <p class="text-lg md:text-xl font-bold mb-2 md:mb-4 underline underline-offset-4">Links</p>
+        <ul class="grid grid-cols-1 gap-2 md:gap-4 text-base md:text-lg">
+            <li class="group">
+                <a href="/blog" class="block p-1 md:p-2 hover:bg-zinc-800 transition-colors duration-200">
+                    <p class="font-semibold group-hover:underline">blog.</p>
+                    <p class="text-xs md:text-sm text-zinc-400">ramblings of a fool</p>
+                </a>
+            </li>
+            <li class="group">
+                <a href="/about" class="block p-1 md:p-2 hover:bg-zinc-800 transition-colors duration-200">
+                    <p class="font-semibold group-hover:underline">about me.</p>
+                    <p class="text-xs md:text-sm text-zinc-400">bad opsec // wip</p>
+                </a>
+            </li>
+            <li class="group">
+                <a href="mailto:jester@fool.ltd" class="block p-1 md:p-2 hover:bg-zinc-800 transition-colors duration-200">
+                    <p class="font-semibold group-hover:underline">email.</p>
+                    <p class="text-xs md:text-sm text-zinc-400">contact me via email</p>
+                </a>
+            </li>
+   
+        </ul>
+    </div>
+
+    <div class="border-4 border-zinc-50 p-1 md:p-2">
+        <p class="text-lg md:text-xl font-bold mb-2 md:mb-4 underline underline-offset-4">Recent Posts</p>
+        <ul class="space-y-2 md:space-y-4">
+            {recentPosts.map(post => (
+                <li class="group">
+                    <a href={`/blog/${post.slug}`} class="block p-1 md:p-2 hover:bg-zinc-800 transition-colors duration-200">
+                        <p class="font-semibold text-base md:text-lg group-hover:underline">{post.data.title}</p>
+                        <p class="text-xs md:text-sm text-zinc-400">{post.data.date}</p>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</div>
