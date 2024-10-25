@@ -1,26 +1,18 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
-import Prose from '../../components/prose.astro';
 import Base from '../../layouts/base.astro';
-// Remove the Blog import if it's not used in this file
-// import Blog from '../../components/blog.astro';
+import Prose from '../../components/prose.astro'
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection('blog');
-    return blogEntries.map(entry => ({
-        params: { slug: entry.slug }, props: { entry },
-    }));
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
 }
-
-type Props = {
-    entry: CollectionEntry<'blog'>;
-};
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
-
 
 <Base>
     <div class="w-full my-5">
@@ -28,17 +20,11 @@ const { Content } = await entry.render();
         <h1 class="text-3xl font-bold mb-2">{entry.data.title}</h1>
         <h2 class="text-xl text-zinc-300 mb-2">{entry.data.description}</h2>
         <div class="flex items-center space-x-4 mb-4 text-zinc-400 text-sm">
-            <p>{entry.data.date}</p>
-            <div class="flex space-x-2">
-                {entry.data.tags.map((tag: string) => (
-                    <a href={`/tags/${tag}`} class="hover:underline ">#{tag}</a>
-                ))}
-            </div>
+            <p>{entry.data.date.toLocaleDateString()}</p>
         </div>
         <hr class="h-2 my-4 bg-zinc-50">
         <Prose>
             <Content />
         </Prose>
     </article>
-    <a href="/blog" class="text-slate-300 hover:font-extrabold pt-4">[Back to home]</a>
 </Base>
