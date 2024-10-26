@@ -1,0 +1,64 @@
+<div id="jester" class="cursor-pointer flex justify-center">
+  <pre class="text-center no-translate tracking-tighter leading-none text-[0.8rem] antialiased whitespace-pre font-mono jester-ascii">
+
+    ░▒▓███████▓▒░░▒▓█▓▒░      ░▒▓██████▓▒░ ░▒▓██████▓▒░  
+    ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+    ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░        
+    ░▒▓███████▓▒░░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒▒▓███▓▒░ 
+    ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+    ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+    ░▒▓███████▓▒░░▒▓████████▓▒░▒▓██████▓▒░ ░▒▓██████▓▒░  </pre>
+    <audio id="blogAudio" src="/cat and lune.mp3"></audio>
+</div>
+
+<script>
+    const blog = document.getElementById('blog');
+    const audio = document.getElementById('blogAudio') as HTMLAudioElement;
+    let isPlaying = false;
+  
+    const fadeIn = (duration: number) => {
+      let volume = 0;
+      audio.volume = volume;
+      audio.play();
+      
+      const interval = 50; // Update every 50ms
+      const steps = duration / interval;
+      const increment = 1 / steps;
+  
+      const fadeInterval = setInterval(() => {
+        volume = Math.min(volume + increment, 1);
+        audio.volume = volume;
+        
+        if (volume >= 1) {
+          clearInterval(fadeInterval);
+        }
+      }, interval);
+    };
+  
+    const fadeOut = (duration: number) => {
+      let volume = audio.volume;
+      
+      const interval = 50; // Update every 50ms
+      const steps = duration / interval;
+      const decrement = volume / steps;
+  
+      const fadeInterval = setInterval(() => {
+        volume = Math.max(volume - decrement, 0);
+        audio.volume = volume;
+        
+        if (volume <= 0) {
+          clearInterval(fadeInterval);
+          audio.pause();
+        }
+      }, interval);
+    };
+  
+    blog?.addEventListener('click', () => {
+      if (isPlaying) {
+        fadeOut(2000); // Fade out over 2 seconds
+      } else {
+        fadeIn(1000); // Fade in over 1 second
+      }
+      isPlaying = !isPlaying;
+    });
+  </script>

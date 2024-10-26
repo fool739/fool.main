@@ -1,19 +1,15 @@
 ---
-import Base from '../layouts/base.astro'
+import Base from '../layouts/base.astro';
+import Jester from '../components/jester.astro'
+import Link from '../components/link.astro'
 ---
+<Base>
+    
+<div class="jester block w-full my-5"><Jester /></div>
 
-<Base title="FOOL">
+<hr class="h-2 my-4 bg-zinc-50">
 
-<intro class="hover:animate-pulse font-bold"> 
-    <h1>FOOL.</h1>
-    <h2>LIVE ON THE EDGE.</h2>
-</intro>
+<Link />
 
-<div class="underline decoration-2  grid grid-cols-2 grid-rows-2">
-    <a class="hover:font-semibold" href="/about">ABOUT</a>
-    <a class="hover:font-semibold" href="/contact">CONTACT</a>
-    <a class="hover:font-semibold" href="/blog">BLOG</a>
-    <a class="hover:font-semibold" href="/projects">PROJECTS</a>
 </div>
-
 </Base>

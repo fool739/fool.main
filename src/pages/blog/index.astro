@@ -1,36 +1,79 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../../layouts/base.astro';
+import Search from '../../components/search.astro';
+import Blog from '../../components/blog.astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
-const posts = await getCollection('blog');
-posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+// Define type for blog post data
+type BlogPost = CollectionEntry<'blog'>;
+
+let posts = await getCollection('blog') as BlogPost[];
+let sortDescending = true;
+
+// Sort posts by date
+posts = posts.sort((a: BlogPost, b: BlogPost) => {
+    const dateA = new Date(a.data.date).getTime();
+    const dateB = new Date(b.data.date).getTime();
+    return sortDescending ? dateB - dateA : dateA - dateB;
+});
 ---
 
 <Base>
-    <div class="w-full my-5">
-        <div class="max-w-2xl mx-auto px-4">
-            <h1 class="text-3xl font-bold mb-4">BLOG POSTS</h1>
+    <Blog />
+    <hr class="h-2 my-4 bg-zinc-50">
+  
+    <Search />
 
-            <div id="postList">
-                {posts.map((post) => (
-                    <article class="mb-8 post-item">
-                        <p class="font-bold mb-2">
-                            <a href={`/blog/${post.slug}`} class="underline hover:decoration-2 hover:underline">{post.data.title}</a>
-                        </p>
-                        <p class="text-zinc-300 mb-2">{post.data.description}</p>
-                        <div class="flex items-center space-x-4 mb-2 text-zinc-400 text-sm">
-                            <p>{post.data.date.toLocaleDateString()}</p>
-                        </div>
-                        {post.data.tags && (
-                            <div class="flex flex-wrap gap-2">
-                                {post.data.tags.map((tag: string) => (
-                                    <span class="bg-neutral-800 text-zinc-300 px-2 py-1 text-xs rounded">#{tag}</span>
-                                ))}
-                            </div>
-                        )}
-                    </article>
-                ))}
-            </div>
-        </div>
+    <hr class="mb-8 bg-slate-200">
+
+    <div class="text-center mb-4">
+        <button id="sortButton" class="font-semibold text-base">
+            SORT <span id="sortIcon">▼</span>
+        </button>
     </div>
+
+    <div id="postList" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        {posts.map((post) => (
+            <div class="group border-4 border-zinc-700 hover:border-zinc-50 p-2 md:p-4 hover:bg-zinc-800 transition-colors duration-200">
+                <a href={`/blog/${post.slug}`} class="block">
+                    <p class="font-semibold text-base text-zinc-50 md:text-xl group-hover:underline">
+                        {post.data.title}
+                    </p>
+                    <p class="text-lg text-zinc-200">{post.data.description}</p>
+                    <p class="text-xs text-zinc-400">{post.data.date}</p>
+                </a>
+            </div>
+        ))}
+    </div>
+   
+    <script>
+        // Define types for DOM elements
+        const sortButton = document.getElementById('sortButton') as HTMLButtonElement;
+        const sortIcon = document.getElementById('sortIcon') as HTMLSpanElement;
+        const postList = document.getElementById('postList') as HTMLDivElement;
+
+        interface PostElement extends HTMLElement {
+            querySelector(selector: string): HTMLElement | null;
+        }
+
+        if (sortButton && sortIcon && postList) {
+            let descending = true;
+            
+            sortButton.addEventListener('click', () => {
+                descending = !descending;
+                sortIcon.textContent = descending ? '▼' : '▲';
+                
+                const posts = Array.from(postList.children) as PostElement[];
+                posts.sort((a: PostElement, b: PostElement) => {
+                    const dateA = new Date(a.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
+                    const dateB = new Date(b.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
+                    return descending ? dateB - dateA : dateA - dateB;
+                });
+
+                postList.innerHTML = '';
+                posts.forEach(post => postList.appendChild(post));
+            });
+        }
+    </script>
 </Base>
