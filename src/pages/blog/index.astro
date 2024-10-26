@@ -24,18 +24,13 @@ posts = posts.sort((a, b) => {
 
     <hr class="mb-8 bg-slate-200">
 
-    <div class="text-center mb-4">
-        <button id="sortButton" class="font-semibold text-base">
-            SORT <span id="sortIcon">▼</span>
-        </button>
-    </div>
 
     
     <div id="postList" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
         {posts.map(post => (
             <div class="group border-4 border-zinc-700 hover:border-zinc-50 p-2 md:p-4 hover:bg-zinc-800 transition-colors duration-200">
                 <a href={`/blog/${post.slug}`} class="block">
-                    <p class="font-semibold text-base text-zinc-50 md:text-xl group-hover:underline">{post.data.title}</p>
+                    <p class="font-semibold text-base text-zinc-50 md:text-xl decoration-2 group-hover:underline">{post.data.title}</p>
                     <p class="text-lg text-zinc-200">{post.data.description}</p>
                     <p class="text-xs text-zinc-400">{post.data.date}</p>
                 </a>

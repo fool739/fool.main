@@ -1,6 +1,6 @@
 ---
-title: "Playlist"
-description: "Some of my favorite playlist."
+title: "playlist"
+description: "some of my favorite playlist."
 date: 10/15/2024
 tags: ["music"]
 ---
