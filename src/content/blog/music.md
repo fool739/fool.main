@@ -1,8 +1,9 @@
 ---
 title: "playlist"
-description: "some of my favorite playlist."
-date: 10/15/2024
-tags: ["music"]
+description: "a few of my playlist"
+date: "February 7 2025"
+tags: ["blog"]
+draft: false
 ---
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/34os05u0Y3r9pDenzcHFtB?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
