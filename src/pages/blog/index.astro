@@ -1,79 +1,45 @@
 ---
-import Base from '../../layouts/base.astro';
-import Search from '../../components/search.astro';
-import Blog from '../../components/blog.astro';
 import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/base.astro';
+import Tag from '../../components/Tag.astro';
 
-// Define type for blog post data
-type BlogPost = CollectionEntry<'blog'>;
-
-let posts = await getCollection('blog') as BlogPost[];
-let sortDescending = true;
-
-// Sort posts by date
-posts = posts.sort((a: BlogPost, b: BlogPost) => {
-    const dateA = new Date(a.data.date).getTime();
-    const dateB = new Date(b.data.date).getTime();
-    return sortDescending ? dateB - dateA : dateA - dateB;
-});
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Base>
-    <Blog />
-    <hr class="h-2 my-4 bg-zinc-50">
-  
-    <Search />
+    <header class="px-4">
+        <p class="text-lg leading-relaxed mt-10 mb-12">
+            this is my blog. there's gonna be a lot of rambling 
+            and bantering about whatever.</p>
+    </header>
 
-    <hr class="mb-8 bg-slate-200">
-
-    <div class="text-center mb-4">
-        <button id="sortButton" class="font-semibold text-base">
-            SORT <span id="sortIcon">▼</span>
-        </button>
-    </div>
-
-    <div id="postList" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-        {posts.map((post) => (
-            <div class="group border-4 border-zinc-700 hover:border-zinc-50 p-2 md:p-4 hover:bg-zinc-800 transition-colors duration-200">
-                <a href={`/blog/${post.slug}`} class="block">
-                    <p class="font-semibold text-base text-zinc-50 md:text-xl group-hover:underline">
+    <div class="px-4 grid gap-8">
+        {posts.map(post => (
+            <a href={`/blog/${post.slug}`} class="block no-underline">
+                <article class="p-6 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+                    <h2 class="text-2xl font-bold mb-2 text-stone-900 dark:text-zinc-50">
                         {post.data.title}
+                    </h2>
+                    <div class="flex items-center gap-3 text-sm mb-4">
+                        <time datetime={post.data.date.toISOString()} class="text-neutral-600 dark:text-neutral-400">
+                            {new Intl.DateTimeFormat('en-US', {
+                                month: '2-digit',
+                                day: '2-digit',
+                                year: 'numeric'
+                            }).format(post.data.date)}
+                        </time>
+                        <div class="flex gap-2">
+                            {post.data.tags.map(tag => (
+                                <Tag name={tag} />
+                            ))}
+                        </div>
+                    </div>
+                    <p class="text-neutral-600 dark:text-neutral-400">
+                        {post.data.description}
                     </p>
-                    <p class="text-lg text-zinc-200">{post.data.description}</p>
-                    <p class="text-xs text-zinc-400">{post.data.date}</p>
-                </a>
-            </div>
+                </article>
+            </a>
         ))}
     </div>
-   
-    <script>
-        // Define types for DOM elements
-        const sortButton = document.getElementById('sortButton') as HTMLButtonElement;
-        const sortIcon = document.getElementById('sortIcon') as HTMLSpanElement;
-        const postList = document.getElementById('postList') as HTMLDivElement;
-
-        interface PostElement extends HTMLElement {
-            querySelector(selector: string): HTMLElement | null;
-        }
-
-        if (sortButton && sortIcon && postList) {
-            let descending = true;
-            
-            sortButton.addEventListener('click', () => {
-                descending = !descending;
-                sortIcon.textContent = descending ? '▼' : '▲';
-                
-                const posts = Array.from(postList.children) as PostElement[];
-                posts.sort((a: PostElement, b: PostElement) => {
-                    const dateA = new Date(a.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
-                    const dateB = new Date(b.querySelector('.text-xs.text-zinc-400')?.textContent || '').getTime();
-                    return descending ? dateB - dateA : dateA - dateB;
-                });
-
-                postList.innerHTML = '';
-                posts.forEach(post => postList.appendChild(post));
-            });
-        }
-    </script>
 </Base>

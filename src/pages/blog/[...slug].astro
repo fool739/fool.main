@@ -1,44 +1,60 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
-import Prose from '../../components/prose.astro';
 import Base from '../../layouts/base.astro';
-// Remove the Blog import if it's not used in this file
-// import Blog from '../../components/blog.astro';
+import Tag from '../../components/Tag.astro';
+import Prose from '../../components/prose.astro';
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection('blog');
-    return blogEntries.map(entry => ({
-        params: { slug: entry.slug }, props: { entry },
+    const posts = await getCollection('blog');
+    return posts.map(post => ({
+        params: { slug: post.slug },
+        props: { post },
     }));
 }
 
-type Props = {
-    entry: CollectionEntry<'blog'>;
-};
+const { post } = Astro.props;
+const { Content } = await post.render();
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+}).format(post.data.date);
 ---
 
-
 <Base>
-    <div class="w-full my-5">
-    <article class="max-w-2xl mx-auto px-4 mt-8">
-        <h1 class="text-3xl font-bold mb-2">{entry.data.title}</h1>
-        <h2 class="text-xl text-zinc-300 mb-2">{entry.data.description}</h2>
-        <div class="flex items-center space-x-4 mb-4 text-zinc-400 text-sm">
-            <p>{entry.data.date}</p>
-            <div class="flex space-x-2">
-                {entry.data.tags.map((tag: string) => (
-                    <a href={`/tags/${tag}`} class="hover:underline ">#{tag}</a>
+    <!-- Back button - Desktop Only -->
+    <div class="hidden lg:block mb-8">
+        <a 
+            href="/blog"
+            class="inline-flex items-center text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+            Back to Blog
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <article class="px-4">
+        <h1 class="text-3xl font-bold mb-2 mt-4 text-neutral-900 dark:text-neutral-100">
+            {post.data.title}
+        </h1>
+
+        <div class="flex items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400 mb-6">
+            <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
+            <div class="flex gap-2">
+                {post.data.tags.map(tag => (
+                    <Tag name={tag} />
                 ))}
             </div>
         </div>
-        <hr class="h-2 my-4 bg-zinc-50">
-        <Prose>
+
+        <div class="max-w-none">
+        <Prose> 
             <Content />
         </Prose>
+        </div>
     </article>
-    <a href="/blog" class="text-slate-300 hover:font-extrabold pt-4">[Back to home]</a>
 </Base>

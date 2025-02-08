@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css"
-import Analytics from '@vercel/analytics/astro'
-const { title } = Astro.props
+import ThemeToggle from '../components/ThemeToggle.astro';
+
 ---
 
 <html lang="en">
@@ -33,24 +33,24 @@ const { title } = Astro.props
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-        
     </head>
 
-    <body class="bg-neutral-950 text-zinc-50"> 
-        <div id="wrapper">
-            <nav class="flex justify-between justify-self-auto underline decoration-4 underline-offset-4 items-center w-full select-none py-4">
-                <a href="/" class="font-bold text-lg">BREATH LIFE INTO ALL YOU DO.</a>
-                <script> import { setupTextCycle } from '../scripts/cycleText'; document.addEventListener('DOMContentLoaded', setupTextCycle);</script>
-                <a href="/" class="text-lg font-bold">HOME</a>
+    <body>
+        <div class="max-w-3xl mx-auto py-6 px-4 lg:px-6">
+            <nav class="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full select-none py-4 gap-4">
+                <a href="/" class="font-semibold text-3xl text-center sm:text-left">fool.ltd</a>
+                <div class="flex items-center justify-center sm:justify-start gap-6">
+                    <a href="/" class="text-xl font-bold hidden sm:block">HOME</a>
+                    <a href="/projects" class="text-xl font-bold">PROJECTS</a>
+                    <a href="/blog" class="text-xl font-bold">BLOG</a>
+                    <ThemeToggle />
+                </div>
             </nav>
 
-        <slot />
-
+            <slot />
+            
         </div>
     </body>
-
-    <Analytics/>
-
 </html>
 
 
