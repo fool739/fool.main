@@ -16,4 +16,3 @@ I don't lie. The dreams sound great to me too. Of course deep down I know they'r
 
 #
 Everyone makes me feel so much more real than I know. Than I would like to feel. Than I could feel. I hate everyone, but once in a while I find myself liking everyone. In another place, another time, I'm here to really enjoy it. 
-
