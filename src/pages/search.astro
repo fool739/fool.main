@@ -1,0 +1,237 @@
+---
+import Base from '../layouts/base.astro';
+---
+
+<Base>
+    <header class="px-4">
+        <h1 class="text-3xl font-bold mb-4 text-stone-900 dark:text-zinc-50">Search</h1>
+        <p class="text-lg leading-relaxed mt-4 mb-8 text-neutral-600 dark:text-neutral-400">
+            search through all my posts and rambling thoughts.
+        </p>
+    </header>
+
+    <div class="px-4">
+        <!-- Custom Search Input -->
+        <div class="mb-8">
+            <input 
+                type="text" 
+                id="search-input"
+                placeholder="Search posts..."
+                class="w-full p-4 text-lg border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-900 text-stone-900 dark:text-zinc-50 placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors"
+            />
+        </div>
+        
+        <!-- Search Results Container -->
+        <div id="search-results" class="grid gap-6">
+            <!-- Search results will be inserted here -->
+        </div>
+
+        <!-- Loading State -->
+        <div id="search-loading" class="hidden text-center py-8">
+            <p class="text-neutral-600 dark:text-neutral-400">Searching...</p>
+        </div>
+
+        <!-- No Results State -->
+        <div id="no-results" class="hidden text-center py-8">
+            <p class="text-neutral-600 dark:text-neutral-400">No results found. Try a different search term.</p>
+        </div>
+
+        <!-- Initial State -->
+        <div id="search-prompt" class="text-center py-12">
+            <p class="text-neutral-600 dark:text-neutral-400 text-lg">Start typing to search through posts...</p>
+        </div>
+    </div>
+
+    <script>
+        let pagefind: any = null;
+
+        // Initialize Pagefind
+        async function initializePagefind() {
+            try {
+                // Check if we're in production (pagefind files exist)
+                if (typeof window !== 'undefined') {
+                    // Try to load pagefind dynamically
+                    const script = document.createElement('script');
+                    script.src = '/pagefind/pagefind.js';
+                    script.onload = async () => {
+                        // @ts-ignore
+                        if (window.pagefind) {
+                            // @ts-ignore
+                            pagefind = window.pagefind;
+                            console.log('Pagefind initialized');
+                        }
+                    };
+                    script.onerror = () => {
+                        console.warn('Pagefind not available - likely in development mode');
+                        showDevelopmentMessage();
+                    };
+                    document.head.appendChild(script);
+                }
+            } catch (error) {
+                console.error('Failed to initialize Pagefind:', error);
+                showDevelopmentMessage();
+            }
+        }
+
+        // Show development mode message
+        function showDevelopmentMessage() {
+            const container = document.getElementById('search-prompt');
+            if (container) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <p class="text-neutral-600 dark:text-neutral-400 text-lg mb-4">
+                            Search is available after building the site.
+                        </p>
+                        <p class="text-sm text-neutral-500 dark:text-neutral-500">
+                            Run <code class="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded">npm run build && npm run preview</code> to test search functionality.
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Perform search
+        async function performSearch(query: string) {
+            if (!pagefind) {
+                console.warn('Pagefind not initialized');
+                return;
+            }
+
+            if (!query.trim()) {
+                showElement('search-prompt');
+                hideElements(['search-results', 'search-loading', 'no-results']);
+                return;
+            }
+
+            showElement('search-loading');
+            hideElements(['search-results', 'search-prompt', 'no-results']);
+
+            try {
+                const search = await pagefind.search(query);
+                
+                if (search.results.length === 0) {
+                    showElement('no-results');
+                    hideElements(['search-loading', 'search-results', 'search-prompt']);
+                    return;
+                }
+
+                // Get detailed results
+                const results = await Promise.all(
+                    search.results.slice(0, 10).map((result: any) => result.data())
+                );
+
+                displayResults(results);
+                showElement('search-results');
+                hideElements(['search-loading', 'search-prompt', 'no-results']);
+            } catch (error) {
+                console.error('Search error:', error);
+                hideElements(['search-loading', 'search-results', 'search-prompt', 'no-results']);
+            }
+        }
+
+        // Display search results
+        function displayResults(results: any[]) {
+            const container = document.getElementById('search-results');
+            if (!container) return;
+
+            container.innerHTML = results.map(result => `
+                <a href="${result.url}" class="block no-underline">
+                    <article class="p-6 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+                        <h2 class="text-xl font-bold mb-2 text-stone-900 dark:text-zinc-50">
+                            ${result.meta?.title || 'Untitled'}
+                        </h2>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-3">
+                            ${result.excerpt || 'No description available.'}
+                        </p>
+                        <div class="text-sm text-neutral-500 dark:text-neutral-500">
+                            ${result.url}
+                        </div>
+                    </article>
+                </a>
+            `).join('');
+        }
+
+        // Utility functions
+        function showElement(id: string) {
+            const element = document.getElementById(id);
+            if (element) element.classList.remove('hidden');
+        }
+
+        function hideElements(ids: string[]) {
+            ids.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.classList.add('hidden');
+            });
+        }
+
+        // Debounce function
+        function debounce(func: Function, delay: number) {
+            let timeoutId: number;
+            return (...args: any[]) => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(null, args), delay);
+            };
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initializePagefind();
+            
+            const searchInput = document.getElementById('search-input') as HTMLInputElement;
+            if (searchInput) {
+                const debouncedSearch = debounce(performSearch, 300);
+                
+                searchInput.addEventListener('input', (e) => {
+                    const query = (e.target as HTMLInputElement).value;
+                    debouncedSearch(query);
+                });
+
+                // Handle Enter key
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const query = (e.target as HTMLInputElement).value;
+                        performSearch(query);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <style>
+        /* Additional styles for search states */
+        #search-input:focus {
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark #search-input:focus {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Loading animation */
+        #search-loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            border-top-color: #333;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        .dark #search-loading::after {
+            border-color: #555;
+            border-top-color: #ccc;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</Base>
