@@ -42,35 +42,39 @@ import Base from '../layouts/base.astro';
         </div>
     </div>
 
-    <script>
-        let pagefind: any = null;
+    <script is:inline>
+        let pagefind = null;
+        let isPagefindReady = false;
 
         // Initialize Pagefind
         async function initializePagefind() {
-            try {
-                // Check if we're in production (pagefind files exist)
-                if (typeof window !== 'undefined') {
-                    // Try to load pagefind dynamically
-                    const script = document.createElement('script');
-                    script.src = '/pagefind/pagefind.js';
-                    script.onload = async () => {
-                        // @ts-ignore
+            return new Promise((resolve, reject) => {
+                // Load the pagefind script
+                const script = document.createElement('script');
+                script.src = '/pagefind/pagefind.js';
+                
+                script.onload = () => {
+                    // Give it a moment to attach to window
+                    setTimeout(() => {
                         if (window.pagefind) {
-                            // @ts-ignore
                             pagefind = window.pagefind;
-                            console.log('Pagefind initialized');
+                            isPagefindReady = true;
+                            console.log('Pagefind loaded successfully');
+                            resolve();
+                        } else {
+                            console.error('Pagefind not found on window after script load');
+                            reject(new Error('Pagefind not available'));
                         }
-                    };
-                    script.onerror = () => {
-                        console.warn('Pagefind not available - likely in development mode');
-                        showDevelopmentMessage();
-                    };
-                    document.head.appendChild(script);
-                }
-            } catch (error) {
-                console.error('Failed to initialize Pagefind:', error);
-                showDevelopmentMessage();
-            }
+                    }, 50);
+                };
+                
+                script.onerror = (error) => {
+                    console.error('Failed to load Pagefind script:', error);
+                    reject(error);
+                };
+                
+                document.head.appendChild(script);
+            });
         }
 
         // Show development mode message
@@ -91,9 +95,9 @@ import Base from '../layouts/base.astro';
         }
 
         // Perform search
-        async function performSearch(query: string) {
-            if (!pagefind) {
-                console.warn('Pagefind not initialized');
+        async function performSearch(query) {
+            if (!pagefind || !isPagefindReady) {
+                console.warn('Pagefind not ready yet');
                 return;
             }
 
@@ -109,7 +113,7 @@ import Base from '../layouts/base.astro';
             try {
                 const search = await pagefind.search(query);
                 
-                if (search.results.length === 0) {
+                if (!search || !search.results || search.results.length === 0) {
                     showElement('no-results');
                     hideElements(['search-loading', 'search-results', 'search-prompt']);
                     return;
@@ -117,7 +121,7 @@ import Base from '../layouts/base.astro';
 
                 // Get detailed results
                 const results = await Promise.all(
-                    search.results.slice(0, 10).map((result: any) => result.data())
+                    search.results.slice(0, 10).map((result) => result.data())
                 );
 
                 displayResults(results);
@@ -125,12 +129,13 @@ import Base from '../layouts/base.astro';
                 hideElements(['search-loading', 'search-prompt', 'no-results']);
             } catch (error) {
                 console.error('Search error:', error);
-                hideElements(['search-loading', 'search-results', 'search-prompt', 'no-results']);
+                showElement('no-results');
+                hideElements(['search-loading', 'search-results', 'search-prompt']);
             }
         }
 
         // Display search results
-        function displayResults(results: any[]) {
+        function displayResults(results) {
             const container = document.getElementById('search-results');
             if (!container) return;
 
@@ -152,12 +157,12 @@ import Base from '../layouts/base.astro';
         }
 
         // Utility functions
-        function showElement(id: string) {
+        function showElement(id) {
             const element = document.getElementById(id);
             if (element) element.classList.remove('hidden');
         }
 
-        function hideElements(ids: string[]) {
+        function hideElements(ids) {
             ids.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) element.classList.add('hidden');
@@ -165,9 +170,9 @@ import Base from '../layouts/base.astro';
         }
 
         // Debounce function
-        function debounce(func: Function, delay: number) {
-            let timeoutId: number;
-            return (...args: any[]) => {
+        function debounce(func, delay) {
+            let timeoutId;
+            return (...args) => {
                 clearTimeout(timeoutId);
                 timeoutId = setTimeout(() => func.apply(null, args), delay);
             };
@@ -175,25 +180,34 @@ import Base from '../layouts/base.astro';
 
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', async () => {
-            await initializePagefind();
-            
-            const searchInput = document.getElementById('search-input') as HTMLInputElement;
-            if (searchInput) {
-                const debouncedSearch = debounce(performSearch, 300);
+            try {
+                await initializePagefind();
                 
-                searchInput.addEventListener('input', (e) => {
-                    const query = (e.target as HTMLInputElement).value;
-                    debouncedSearch(query);
-                });
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    const debouncedSearch = debounce(performSearch, 300);
+                    
+                    searchInput.addEventListener('input', (e) => {
+                        const query = e.target.value;
+                        if (isPagefindReady) {
+                            debouncedSearch(query);
+                        }
+                    });
 
-                // Handle Enter key
-                searchInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        const query = (e.target as HTMLInputElement).value;
-                        performSearch(query);
-                    }
-                });
+                    // Handle Enter key
+                    searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const query = e.target.value;
+                            if (isPagefindReady) {
+                                performSearch(query);
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to initialize Pagefind:', error);
+                showDevelopmentMessage();
             }
         });
     </script>
