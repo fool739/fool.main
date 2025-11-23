@@ -20,9 +20,19 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     month: 'long',
     day: 'numeric'
 }).format(post.data.date);
+
+// Format date for sorting (YYYY-MM-DD format for proper sorting)
+const sortableDate = post.data.date.toISOString().split('T')[0];
 ---
 
 <Base>
+    <!-- Pagefind sorting metadata -->
+    <div style="display: none;" 
+         data-pagefind-sort="date[data-date], title[data-title]" 
+         data-date={sortableDate}
+         data-title={post.data.title}>
+    </div>
+
     <!-- Back button - Desktop Only -->
     <div class="hidden lg:block mb-8">
         <a 

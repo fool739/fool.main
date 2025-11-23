@@ -1,251 +1,236 @@
+code\Fool Remake\FM\fool.main\src\pages\search.astro
 ---
 import Base from '../layouts/base.astro';
+import SearchField from '../components/SearchField.astro';
 ---
 
 <Base>
     <header class="px-4">
-        <h1 class="text-3xl font-bold mb-4 text-stone-900 dark:text-zinc-50">Search</h1>
-        <p class="text-lg leading-relaxed mt-4 mb-8 text-neutral-600 dark:text-neutral-400">
-            search through all my posts and rambling thoughts.
+        <p class="text-lg leading-relaxed mt-10 text-neutral-600 dark:text-neutral-400">
+            search through the disaster that is my head :3
         </p>
     </header>
 
     <div class="px-4">
-        <!-- Custom Search Input -->
-        <div class="mb-8">
-            <input 
-                type="text" 
-                id="search-input"
-                placeholder="Search posts..."
-                class="w-full p-4 text-lg border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-900 text-stone-900 dark:text-zinc-50 placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors"
-            />
-        </div>
-        
-        <!-- Search Results Container -->
-        <div id="search-results" class="grid gap-6">
-            <!-- Search results will be inserted here -->
-        </div>
-
-        <!-- Loading State -->
-        <div id="search-loading" class="hidden text-center py-8">
-            <p class="text-neutral-600 dark:text-neutral-400">Searching...</p>
-        </div>
-
-        <!-- No Results State -->
-        <div id="no-results" class="hidden text-center py-8">
-            <p class="text-neutral-600 dark:text-neutral-400">No results found. Try a different search term.</p>
-        </div>
-
-        <!-- Initial State -->
-        <div id="search-prompt" class="text-center py-12">
-            <p class="text-neutral-600 dark:text-neutral-400 text-lg">Start typing to search through posts...</p>
-        </div>
+        <SearchField />
     </div>
 
-    <script is:inline>
-        let pagefind = null;
-        let isPagefindReady = false;
-
-        // Initialize Pagefind
-        async function initializePagefind() {
-            return new Promise((resolve, reject) => {
-                // Load the pagefind script
-                const script = document.createElement('script');
-                script.src = '/pagefind/pagefind.js';
-                
-                script.onload = () => {
-                    // Give it a moment to attach to window
-                    setTimeout(() => {
-                        if (window.pagefind) {
-                            pagefind = window.pagefind;
-                            isPagefindReady = true;
-                            console.log('Pagefind loaded successfully');
-                            resolve();
-                        } else {
-                            console.error('Pagefind not found on window after script load');
-                            reject(new Error('Pagefind not available'));
-                        }
-                    }, 50);
-                };
-                
-                script.onerror = (error) => {
-                    console.error('Failed to load Pagefind script:', error);
-                    reject(error);
-                };
-                
-                document.head.appendChild(script);
-            });
-        }
-
-        // Show development mode message
-        function showDevelopmentMessage() {
-            const container = document.getElementById('search-prompt');
-            if (container) {
-                container.innerHTML = `
-                    <div class="text-center py-12">
-                        <p class="text-neutral-600 dark:text-neutral-400 text-lg mb-4">
-                            Search is available after building the site.
-                        </p>
-                        <p class="text-sm text-neutral-500 dark:text-neutral-500">
-                            Run <code class="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded">npm run build && npm run preview</code> to test search functionality.
-                        </p>
-                    </div>
-                `;
-            }
-        }
-
-        // Perform search
-        async function performSearch(query) {
-            if (!pagefind || !isPagefindReady) {
-                console.warn('Pagefind not ready yet');
-                return;
-            }
-
-            if (!query.trim()) {
-                showElement('search-prompt');
-                hideElements(['search-results', 'search-loading', 'no-results']);
-                return;
-            }
-
-            showElement('search-loading');
-            hideElements(['search-results', 'search-prompt', 'no-results']);
-
-            try {
-                const search = await pagefind.search(query);
-                
-                if (!search || !search.results || search.results.length === 0) {
-                    showElement('no-results');
-                    hideElements(['search-loading', 'search-results', 'search-prompt']);
-                    return;
-                }
-
-                // Get detailed results
-                const results = await Promise.all(
-                    search.results.slice(0, 10).map((result) => result.data())
-                );
-
-                displayResults(results);
-                showElement('search-results');
-                hideElements(['search-loading', 'search-prompt', 'no-results']);
-            } catch (error) {
-                console.error('Search error:', error);
-                showElement('no-results');
-                hideElements(['search-loading', 'search-results', 'search-prompt']);
-            }
-        }
-
-        // Display search results
-        function displayResults(results) {
-            const container = document.getElementById('search-results');
-            if (!container) return;
-
-            container.innerHTML = results.map(result => `
-                <a href="${result.url}" class="block no-underline">
-                    <article class="p-6 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
-                        <h2 class="text-xl font-bold mb-2 text-stone-900 dark:text-zinc-50">
-                            ${result.meta?.title || 'Untitled'}
-                        </h2>
-                        <p class="text-neutral-600 dark:text-neutral-400 mb-3">
-                            ${result.excerpt || 'No description available.'}
-                        </p>
-                        <div class="text-sm text-neutral-500 dark:text-neutral-500">
-                            ${result.url}
-                        </div>
-                    </article>
-                </a>
-            `).join('');
-        }
-
-        // Utility functions
-        function showElement(id) {
-            const element = document.getElementById(id);
-            if (element) element.classList.remove('hidden');
-        }
-
-        function hideElements(ids) {
-            ids.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.classList.add('hidden');
-            });
-        }
-
-        // Debounce function
-        function debounce(func, delay) {
-            let timeoutId;
-            return (...args) => {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => func.apply(null, args), delay);
-            };
-        }
-
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                await initializePagefind();
-                
-                const searchInput = document.getElementById('search-input');
-                if (searchInput) {
-                    const debouncedSearch = debounce(performSearch, 300);
-                    
-                    searchInput.addEventListener('input', (e) => {
-                        const query = e.target.value;
-                        if (isPagefindReady) {
-                            debouncedSearch(query);
-                        }
-                    });
-
-                    // Handle Enter key
-                    searchInput.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                            const query = e.target.value;
-                            if (isPagefindReady) {
-                                performSearch(query);
-                            }
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Failed to initialize Pagefind:', error);
-                showDevelopmentMessage();
-            }
-        });
-    </script>
-
     <style>
-        /* Additional styles for search states */
-        #search-input:focus {
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        /* Custom styling */
+        :global([data-pagefind-ui]) {
+            font-family: inherit !important;
+            --pagefind-ui-scale: 1;
+            --pagefind-ui-primary: #1c1917;
+            --pagefind-ui-text: #525252;
+            --pagefind-ui-background: #ffffff;
+            --pagefind-ui-border: #e5e5e5;
+            --pagefind-ui-tag: #f5f5f5;
         }
 
-        .dark #search-input:focus {
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        :global(.dark [data-pagefind-ui]) {
+            --pagefind-ui-primary: #fafaf9;
+            --pagefind-ui-text: #a3a3a3;
+            --pagefind-ui-background: #0a0a0a;
+            --pagefind-ui-border: #262626;
+            --pagefind-ui-tag: #262626;
         }
 
-        /* Loading animation */
-        #search-loading::after {
-            content: '';
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ccc;
-            border-radius: 50%;
-            border-top-color: #333;
-            animation: spin 1s ease-in-out infinite;
-            margin-left: 10px;
+        /* Search input */
+        :global([data-pagefind-ui] input[type="text"]) {
+            width: 100% !important;
+            padding: 1rem 1rem 1rem 3rem !important; /* Extra left padding for icon */
+            font-size: 1.125rem !important;
+            line-height: 1.75rem !important;
+            border: 1px solid #e5e5e5 !important;
+            border-radius: 0.5rem !important;
+            background: white !important;
+            color: #1c1917 !important;
+            margin-bottom: 1rem !important;
+            transition: all 0.2s ease !important;
+            font-family: inherit !important;
+            box-sizing: border-box !important;
         }
 
-        .dark #search-loading::after {
-            border-color: #555;
-            border-top-color: #ccc;
+        :global(.dark [data-pagefind-ui] input[type="text"]) {
+            border-color: #262626 !important;
+            background: #171717 !important;
+            color: #fafaf9 !important;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        :global([data-pagefind-ui] input[type="text"]:focus) {
+            outline: none !important;
+            border-color: #737373 !important;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
         }
 
-        code {
-            font-family: 'Courier New', monospace;
+        :global(.dark [data-pagefind-ui] input[type="text"]:focus) {
+            border-color: #525252 !important;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+        }
+
+        :global([data-pagefind-ui] input[type="text"]::placeholder) {
+            color: #a3a3a3 !important;
+            opacity: 1 !important;
+        }
+
+        :global(.dark [data-pagefind-ui] input[type="text"]::placeholder) {
+            color: #737373 !important;
+        }
+
+        /* Sort dropdown styling */
+        :global([data-pagefind-ui] select) {
+            border: 1px solid #e5e5e5 !important;
+            border-radius: 0.375rem !important;
+            background: white !important;
+            color: #1c1917 !important;
+            padding: 0.5rem 2rem 0.5rem 0.75rem !important;
+            font-size: 0.875rem !important;
+            margin-bottom: 2rem !important;
+            font-family: inherit !important;
+            cursor: pointer !important;
+            appearance: none !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+            background-position: right 0.5rem center !important;
+            background-repeat: no-repeat !important;
+            background-size: 1.5em 1.5em !important;
+        }
+
+        :global(.dark [data-pagefind-ui] select) {
+            border-color: #262626 !important;
+            background: #171717 !important;
+            color: #fafaf9 !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+        }
+
+        :global([data-pagefind-ui] select:focus) {
+            outline: none !important;
+            border-color: #737373 !important;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        :global(.dark [data-pagefind-ui] select:focus) {
+            border-color: #525252 !important;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Results container */
+        :global([data-pagefind-ui-results]) {
+            display: grid !important;
+            gap: 2rem !important;
+            margin: 0 !important;
+        }
+
+        /* Individual result cards */
+        :global([data-pagefind-ui-result]) {
+            border: 1px solid #e5e5e5 !important;
+            border-radius: 0.5rem !important;
+            padding: 1.5rem !important;
+            background: white !important;
+            transition: border-color 0.2s ease !important;
+            margin: 0 !important;
+            display: block !important;
+        }
+
+        :global(.dark [data-pagefind-ui-result]) {
+            border-color: #262626 !important;
+            background: #0a0a0a !important;
+        }
+
+        :global([data-pagefind-ui-result]:hover) {
+            border-color: #737373 !important;
+        }
+
+        :global(.dark [data-pagefind-ui-result]:hover) {
+            border-color: #525252 !important;
+        }
+
+        /* Result titles */
+        :global([data-pagefind-ui-result-title]) {
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
+            color: #1c1917 !important;
+            margin-bottom: 0.5rem !important;
+            line-height: 1.25 !important;
+        }
+
+        :global(.dark [data-pagefind-ui-result-title]) {
+            color: #fafaf9 !important;
+        }
+
+        :global([data-pagefind-ui-result-title] a) {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+
+        /* Result excerpts */
+        :global([data-pagefind-ui-result-excerpt]) {
+            color: #525252 !important;
+            line-height: 1.6 !important;
+            margin-bottom: 0.75rem !important;
+            font-size: 1rem !important;
+        }
+
+        :global(.dark [data-pagefind-ui-result-excerpt]) {
+            color: #a3a3a3 !important;
+        }
+
+        /* Result URLs */
+        :global([data-pagefind-ui-result-url]) {
+            font-size: 0.875rem !important;
+            color: #737373 !important;
+            margin: 0 !important;
+        }
+
+        /* Tags */
+        :global([data-pagefind-ui-result-tags]) {
+            display: flex !important;
+            gap: 0.5rem !important;
+            flex-wrap: wrap !important;
+            margin-top: 0.75rem !important;
+        }
+
+        :global([data-pagefind-ui-result-tag]) {
+            background: #f5f5f5 !important;
+            border: 1px solid #e5e5e5 !important;
+            border-radius: 0.25rem !important;
+            padding: 0.25rem 0.5rem !important;
+            font-size: 0.75rem !important;
+            color: #525252 !important;
+            text-decoration: none !important;
+        }
+
+        :global(.dark [data-pagefind-ui-result-tag]) {
+            background: #262626 !important;
+            border-color: #262626 !important;
+            color: #a3a3a3 !important;
+        }
+
+        /* Messages */
+        :global([data-pagefind-ui-message]) {
+            color: #525252 !important;
+            text-align: center !important;
+            padding: 3rem 0 !important;
+            font-style: italic !important;
+            font-size: 1rem !important;
+        }
+
+        :global(.dark [data-pagefind-ui-message]) {
+            color: #a3a3a3 !important;
+        }
+
+        /* Hide unwanted elements */
+        :global([data-pagefind-ui-drawer]),
+        :global([data-pagefind-ui-button]) {
+            display: none !important;
+        }
+
+        /* Clean up spacing */
+        :global([data-pagefind-ui]) {
+            margin: 0 !important;
+        }
+
+        :global([data-pagefind-ui] *) {
+            font-family: inherit !important;
         }
     </style>
 </Base>
