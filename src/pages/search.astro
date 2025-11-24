@@ -6,7 +6,7 @@ import SearchField from '../components/SearchField.astro';
 
 <Base>
     <header class="px-4">
-        <p class="text-lg leading-relaxed mt-10 text-neutral-600 dark:text-neutral-400">
+        <p class="text-lg leading-relaxed mt-10 mb-10">
             search through the disaster that is my head :3
         </p>
     </header>
@@ -76,25 +76,6 @@ import SearchField from '../components/SearchField.astro';
         :global(.dark [data-pagefind-ui] input[type="text"]::placeholder) {
             color: #737373 !important;
         }
-
-        /* Sort dropdown styling */
-        :global([data-pagefind-ui] select) {
-            border: 1px solid #e5e5e5 !important;
-            border-radius: 0.375rem !important;
-            background: white !important;
-            color: #1c1917 !important;
-            padding: 0.5rem 2rem 0.5rem 0.75rem !important;
-            font-size: 0.875rem !important;
-            margin-bottom: 2rem !important;
-            font-family: inherit !important;
-            cursor: pointer !important;
-            appearance: none !important;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
-            background-position: right 0.5rem center !important;
-            background-repeat: no-repeat !important;
-            background-size: 1.5em 1.5em !important;
-        }
-
         :global(.dark [data-pagefind-ui] select) {
             border-color: #262626 !important;
             background: #171717 !important;

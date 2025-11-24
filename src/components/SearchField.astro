@@ -15,23 +15,6 @@ const divProps = {
 };
 ---
 
-<!-- Custom Sort Dropdown -->
-<div class="mb-4">
-  <label for="search-sort" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-    Sort by:
-  </label>
-  <select 
-    id="search-sort" 
-    class="border border-neutral-200 dark:border-neutral-800 rounded-md bg-white dark:bg-neutral-900 text-stone-900 dark:text-zinc-50 px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors"
-  >
-    <option value="">Relevance</option>
-    <option value="date">Date (Newest First)</option>
-    <option value="date:asc">Date (Oldest First)</option>
-    <option value="title">Title (A-Z)</option>
-    <option value="title:desc">Title (Z-A)</option>
-  </select>
-</div>
-
 <div {...divProps} data-pagefind-ui data-bundle-path={bundlePath}></div>
 
 <script>
@@ -71,16 +54,7 @@ const divProps = {
       const query = params.get("q");
       const sort = params.get("sort");
 
-      // Set initial sort dropdown value
-      const sortSelect = document.getElementById('search-sort') as HTMLSelectElement;
-      if (sortSelect && sort) {
-        sortSelect.value = sort;
-      }
-
-      if (query && input) {
-        input.value = query;
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-      }
+    
 
       // Handle search input changes
       input?.addEventListener("input", (e) => {
@@ -97,39 +71,7 @@ const divProps = {
         const newUrl = params.toString() ? `${url.pathname}?${params}` : url.pathname;
         window.history.replaceState({}, "", newUrl);
         
-        // Re-trigger search with current sort
-        triggerSearchWithSort();
       });
-
-      // Handle sort changes
-      sortSelect?.addEventListener("change", (e) => {
-        const select = e.target as HTMLSelectElement;
-        const url = new URL(window.location.href);
-        const params = new URLSearchParams(url.search);
-        
-        if (select.value) {
-          params.set("sort", select.value);
-        } else {
-          params.delete("sort");
-        }
-        
-        const newUrl = params.toString() ? `${url.pathname}?${params}` : url.pathname;
-        window.history.replaceState({}, "", newUrl);
-        
-        // Re-trigger search with new sort
-        triggerSearchWithSort();
-      });
-
-      function triggerSearchWithSort() {
-        const currentQuery = input?.value || "";
-        const currentSort = sortSelect?.value || "";
-        
-        if (currentQuery && pagefindInstance) {
-          // Re-trigger the search to apply sorting
-          const searchEvent = new Event("input", { bubbles: true });
-          input?.dispatchEvent(searchEvent);
-        }
-      }
     }
   });
 </script>
