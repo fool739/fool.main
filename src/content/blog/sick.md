@@ -1,8 +1,8 @@
 ---
-title: "Twisted."
-description: "A stream of consciousness."
+title: "twisted."
+description: "a stream of consciousness."
 date: "January 13 2026"
-tags: ["post"]
+tags: ["vent"]
 draft: false
 ---
 
