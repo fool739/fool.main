@@ -1,6 +1,6 @@
 ---
-title: "2026"
-description: "Musings to enter a new year."
+title: "2026."
+description: "thoughts to enter a new year."
 date: "January 6 2026"
 tags: ["post"]
 draft: false
