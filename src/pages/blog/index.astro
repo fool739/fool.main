@@ -2,26 +2,81 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/base.astro';
 import Tag from '../../components/Tag.astro';
+import "@pagefind/default-ui/css/ui.css";
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
-posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Get all unique tags
+const allTags = [...new Set(posts.flatMap(post => post.data.tags))].sort();
+
+const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhost:4321/").pathname;
 ---
 
 <Base>
     <header class="px-4">
-        <p data-pagefind-ignore class="text-lg leading-relaxed mt-10 mb-12">
-            this is my blog. there's gonna be a lot of rambling 
-            and bantering about whatever. <a class="underline" href="/search">click here to search.</a></p> 
+        <p data-pagefind-ignore class="text-lg leading-relaxed mt-10 mb-8">
+            this is my blog. there's gonna be a lot of rambling
+            and bantering about whatever.</p>
     </header>
 
-    <div class="px-4 grid gap-8">
+    <!-- Search and Filter Section -->
+    <div class="px-4 mb-8">
+        <div class="flex flex-col lg:flex-row gap-4 items-start">
+            <!-- Search Bar -->
+            <div class="flex-1 w-full">
+                <div data-pagefind-ui data-bundle-path={bundlePath}></div>
+            </div>
+
+            <!-- Filter Dropdown -->
+            <div class="lg:w-auto w-full">
+                <details class="group">
+                    <summary class="flex items-center gap-3 cursor-pointer list-none px-4 py-2 rounded-md border border-neutral-200 dark:border-neutral-800 bg-zinc-50 dark:bg-neutral-950 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-900 dark:text-neutral-100">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                        </svg>
+                        <span class="font-bold text-neutral-900 dark:text-neutral-100">Filter</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-600 dark:text-neutral-400 group-open:rotate-180 transition-transform">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </summary>
+
+                    <div class="mt-4 p-4 rounded-md border border-neutral-200 dark:border-neutral-800 bg-zinc-50 dark:bg-neutral-950 space-y-4 min-w-[300px]">
+                        <div>
+                            <label for="sortBy" class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Sort by</label>
+                            <select id="sortBy" class="w-full px-3 py-2 rounded-md border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
+                                <option value="date-desc">Latest to Oldest</option>
+                                <option value="date-asc">Oldest to Latest</option>
+                                <option value="title-asc">Title (A-Z)</option>
+                                <option value="title-desc">Title (Z-A)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="filterTag" class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Filter by tag</label>
+                            <select id="filterTag" class="w-full px-3 py-2 rounded-md border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
+                                <option value="">All tags</option>
+                                {allTags.map(tag => (
+                                    <option value={tag}>{tag}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <div id="posts-container" class="px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
         {posts.map(post => (
-            <a href={`/blog/${post.slug}`} class="block no-underline">
-                <article class="p-6 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
-                    <h2 class="text-2xl font-bold mb-2 text-stone-900 dark:text-zinc-50">
+            <a href={`/blog/${post.slug}`} class="block no-underline group post-card"
+               data-date={post.data.date.valueOf()}
+               data-title={post.data.title.toLowerCase()}
+               data-tags={post.data.tags.join(',')}>
+                <article class="h-full p-6 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all hover:shadow-md">
+                    <h2 class="text-xl font-bold mb-3 text-stone-900 dark:text-zinc-50 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors">
                         {post.data.title}
                     </h2>
-                    <div class="flex items-center gap-3 text-sm mb-4">
+                    <div class="flex flex-wrap items-center gap-2 text-sm mb-4">
                         <time datetime={post.data.date.toISOString()} class="text-neutral-600 dark:text-neutral-400">
                             {new Intl.DateTimeFormat('en-US', {
                                 month: '2-digit',
@@ -29,13 +84,13 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
                                 year: 'numeric'
                             }).format(post.data.date)}
                         </time>
-                        <div class="flex gap-2">
+                        <div class="flex flex-wrap gap-2">
                             {post.data.tags.map(tag => (
                                 <Tag name={tag} />
                             ))}
                         </div>
                     </div>
-                    <p class="text-neutral-600 dark:text-neutral-400">
+                    <p class="text-neutral-600 dark:text-neutral-400 line-clamp-3">
                         {post.data.description}
                     </p>
                 </article>
@@ -43,3 +98,159 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
         ))}
     </div>
 </Base>
+
+<script>
+    const sortSelect = document.getElementById('sortBy') as HTMLSelectElement;
+    const filterSelect = document.getElementById('filterTag') as HTMLSelectElement;
+    const postsContainer = document.getElementById('posts-container');
+
+    function filterAndSortPosts() {
+        if (!postsContainer) return;
+
+        const sortBy = sortSelect.value;
+        const filterTag = filterSelect.value;
+        const posts = Array.from(postsContainer.querySelectorAll('.post-card')) as HTMLElement[];
+
+        // Filter by tag
+        posts.forEach(post => {
+            const tags = post.dataset.tags || '';
+            if (!filterTag || tags.split(',').includes(filterTag)) {
+                post.style.display = 'block';
+            } else {
+                post.style.display = 'none';
+            }
+        });
+
+        // Get visible posts
+        const visiblePosts = posts.filter(post => post.style.display !== 'none');
+
+        // Sort visible posts
+        visiblePosts.sort((a, b) => {
+            switch (sortBy) {
+                case 'date-desc':
+                    return Number(b.dataset.date) - Number(a.dataset.date);
+                case 'date-asc':
+                    return Number(a.dataset.date) - Number(b.dataset.date);
+                case 'title-asc':
+                    return (a.dataset.title || '').localeCompare(b.dataset.title || '');
+                case 'title-desc':
+                    return (b.dataset.title || '').localeCompare(a.dataset.title || '');
+                default:
+                    return 0;
+            }
+        });
+
+        // Reorder in DOM
+        visiblePosts.forEach(post => postsContainer.appendChild(post));
+    }
+
+    sortSelect?.addEventListener('change', filterAndSortPosts);
+    filterSelect?.addEventListener('change', filterAndSortPosts);
+
+    // Initial sort (latest to oldest)
+    filterAndSortPosts();
+</script>
+
+<script>
+    import { PagefindUI } from "@pagefind/default-ui";
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const allSelector = "[data-pagefind-ui]";
+
+        for (const el of document.querySelectorAll(allSelector)) {
+            const bundlePath = el.getAttribute("data-bundle-path") || "/pagefind/";
+
+            new PagefindUI({
+                element: allSelector,
+                bundlePath,
+                showImages: false,
+                debounceTimeoutMs: 100,
+                showSubResults: true,
+                excerptLength: 30,
+                resetStyles: false
+            });
+
+            const input = el.querySelector<HTMLInputElement>(`input[type="text"]`);
+            if (input) {
+                input.placeholder = "search through my mind :3";
+            }
+        }
+    });
+</script>
+
+<style>
+    /* Custom styling for PageFind search */
+    :global([data-pagefind-ui]) {
+        font-family: inherit !important;
+        --pagefind-ui-scale: 1;
+        --pagefind-ui-primary: #1c1917;
+        --pagefind-ui-text: #525252;
+        --pagefind-ui-background: #ffffff;
+        --pagefind-ui-border: #e5e5e5;
+        --pagefind-ui-tag: #f5f5f5;
+    }
+
+    :global(.dark [data-pagefind-ui]) {
+        --pagefind-ui-primary: #fafaf9;
+        --pagefind-ui-text: #a3a3a3;
+        --pagefind-ui-background: #0a0a0a;
+        --pagefind-ui-border: #262626;
+        --pagefind-ui-tag: #262626;
+    }
+
+    /* Search input */
+    :global([data-pagefind-ui] input[type="text"]) {
+        width: 100% !important;
+        padding: 0.75rem 1rem 0.75rem 3.4rem !important;
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+        border: 1px solid #e5e5e5 !important;
+        border-radius: 0.5rem !important;
+        background: white !important;
+        color: #1c1917 !important;
+        transition: all 0.2s ease !important;
+        font-family: inherit !important;
+        box-sizing: border-box !important;
+    }
+
+    :global(.dark [data-pagefind-ui] input[type="text"]) {
+        border-color: #262626 !important;
+        background: #171717 !important;
+        color: #fafaf9 !important;
+    }
+
+    :global([data-pagefind-ui] input[type="text"]:focus) {
+        outline: none !important;
+        border-color: #737373 !important;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    :global(.dark [data-pagefind-ui] input[type="text"]:focus) {
+        border-color: #525252 !important;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+    }
+
+    :global([data-pagefind-ui] input[type="text"]::placeholder) {
+        color: #a3a3a3 !important;
+        opacity: 1 !important;
+    }
+
+    :global(.dark [data-pagefind-ui] input[type="text"]::placeholder) {
+        color: #737373 !important;
+    }
+
+    /* Results container */
+    :global([data-pagefind-ui-results]) {
+        margin-top: 1rem !important;
+    }
+
+    /* Hide unwanted elements */
+    :global([data-pagefind-ui-drawer]),
+    :global([data-pagefind-ui-button]) {
+        display: none !important;
+    }
+
+    :global([data-pagefind-ui] *) {
+        font-family: inherit !important;
+    }
+</style>

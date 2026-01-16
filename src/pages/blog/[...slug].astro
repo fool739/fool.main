@@ -16,9 +16,9 @@ const { post } = Astro.props;
 const { Content } = await post.render();
 
 const formattedDate = new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric'
 }).format(post.data.date);
 
 // Format date for sorting (YYYY-MM-DD format for proper sorting)
@@ -27,15 +27,15 @@ const sortableDate = post.data.date.toISOString().split('T')[0];
 
 <Base>
     <!-- Pagefind sorting metadata -->
-    <div style="display: none;" 
-         data-pagefind-sort="date[data-date], title[data-title]" 
+    <div style="display: none;"
+         data-pagefind-sort="date[data-date], title[data-title]"
          data-date={sortableDate}
          data-title={post.data.title}>
     </div>
 
-    <!-- Back button - Desktop Only -->
-    <div data-pagefind-ignore class="hidden lg:block mb-8">
-        <a 
+    <!-- Back button -->
+    <div data-pagefind-ignore class="px-4 mb-6">
+        <a
             href="/blog"
             class="inline-flex items-center text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
         >
@@ -46,25 +46,29 @@ const sortableDate = post.data.date.toISOString().split('T')[0];
         </a>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main Content Card -->
     <article class="px-4">
-        <h1 class="text-3xl font-bold mb-2 mt-4 text-neutral-900 dark:text-neutral-100">
-            {post.data.title}
-        </h1>
+        <div class="p-6 rounded-lg border border-neutral-200 dark:border-neutral-800">
+            <h1 class="text-3xl font-bold mb-3 text-stone-900 dark:text-zinc-50">
+                {post.data.title}
+            </h1>
 
-        <div class="flex items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400 mb-6">
-            <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
-            <div class="flex gap-2">
-                {post.data.tags.map(tag => (
-                    <Tag name={tag} />
-                ))}
+            <div class="flex items-center gap-3 text-sm mb-6 pb-6 border-b border-neutral-200 dark:border-neutral-800">
+                <time datetime={post.data.date.toISOString()} class="text-neutral-600 dark:text-neutral-400">
+                    {formattedDate}
+                </time>
+                <div class="flex gap-2">
+                    {post.data.tags.map(tag => (
+                        <Tag name={tag} />
+                    ))}
+                </div>
             </div>
-        </div>
 
-        <div class="max-w-none">
-        <Prose> 
-            <Content />
-        </Prose>
+            <div class="max-w-none">
+                <Prose>
+                    <Content />
+                </Prose>
+            </div>
         </div>
     </article>
 </Base>
