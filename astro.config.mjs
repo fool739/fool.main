@@ -4,10 +4,6 @@ import pagefind from 'astro-pagefind';
 
 export default defineConfig({
     site: 'https://www.fool.ltd',
-    adapter: vercel({
-        isr: false,
-        maxDuration: 30
-    }),
     integrations: [tailwind(), pagefind()],
     markdown: {
         shikiConfig: {
