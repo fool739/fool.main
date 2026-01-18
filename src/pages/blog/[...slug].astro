@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/base.astro';
 import Tag from '../../components/Tag.astro';
 import Prose from '../../components/prose.astro';
-import CommentSection from '../../components/comments/CommentSection.astro';
 
 export async function getStaticPaths() {
     const posts = await getCollection('blog');
@@ -71,8 +70,5 @@ const sortableDate = post.data.date.toISOString().split('T')[0];
                 </Prose>
             </div>
         </div>
-
-        <!-- Comments Section -->
-        <CommentSection postSlug={post.slug} />
     </article>
 </Base>

@@ -10,10 +10,5 @@ export default defineConfig({
             theme: 'monokai',
             wrap: true
         }
-    },
-    vite: {
-        ssr: {
-            noExternal: ['@astrojs/vercel']
-        }
     }
 });
