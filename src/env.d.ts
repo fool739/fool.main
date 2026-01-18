@@ -3,16 +3,6 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
-interface ImportMetaEnv {
-    readonly GITHUB_TOKEN: string;
-    readonly GITHUB_REPO: string;
-    readonly GITHUB_BRANCH: string;
-}
-
-interface ImportMeta {
-    readonly env: ImportMetaEnv;
-}
-
 declare module '@pagefind/default-ui' {
     export interface PagefindUIOptions {
         element?: string | HTMLElement;
