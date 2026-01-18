@@ -65,11 +65,12 @@ async function getExistingComments(postSlug: string): Promise<{ comments: Commen
 
         if (response.ok) {
             const data = await response.json();
-            const content = atob(data.content);
+            // Use Buffer for Node.js compatibility
+            const content = Buffer.from(data.content, 'base64').toString('utf-8');
             const parsed: CommentFile = JSON.parse(content);
             return { comments: parsed.comments || [], sha: data.sha };
         }
-    } catch (e) {
+    } catch {
         // File doesn't exist yet
     }
 
@@ -79,14 +80,15 @@ async function getExistingComments(postSlug: string): Promise<{ comments: Commen
 async function saveComments(postSlug: string, comments: Comment[], sha?: string): Promise<boolean> {
     const filePath = `src/data/comments/pending/${postSlug}.json`;
 
-    const content: CommentFile = {
+    const fileContent: CommentFile = {
         postSlug,
         comments,
     };
 
     const body: any = {
         message: `Add pending comment for ${postSlug}`,
-        content: btoa(JSON.stringify(content, null, 2)),
+        // Use Buffer for Node.js compatibility
+        content: Buffer.from(JSON.stringify(fileContent, null, 2)).toString('base64'),
         branch: GITHUB_BRANCH,
     };
 
