@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"> <head><title>"FOOL"</title><meta name="title" content="FOOL"><meta name="viewport" content="width=device-width"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="description" content="LIVE ON THE EDGE"><!-- Facebook Meta Tags --><meta property="og:url" content="https://fool.ltd"><meta property="og:type" content="website"><meta property="og:title" content="" FOOL""><meta property="og:description" content="LIVE ON THE EDGE"><meta property="og:image" content="/favicon/death.jpg"><meta property="og:site_name" content="fool.ltd"><!-- Twitter Meta Tags --><meta name="twitter:card" content="summary_large_image"><meta property="twitter:domain" content="fool.ltd"><meta property="twitter:url" content="https://fool.ltd"><meta name="twitter:title" content="" FOOL""><meta name="twitter:description" content="LIVE ON THE EDGE"><meta name="twitter:image" content="/favicon/death.jpg"><!-- Favicon --><link rel="icon" type="image/x-icon" href="/favicon/fav.ico"><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="stylesheet" href="/_astro/_slug_.CM-bPf3C.css"></head> <body> <div class="max-w-3xl mx-auto py-6 px-4 lg:px-6"> <nav class="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full select-none py-4 gap-4"> <a href="/" class="font-semibold text-3xl text-center sm:text-left">fool.ltd</a> <div class="flex items-center justify-center sm:justify-start gap-6"> <a href="/" class="text-xl font-bold hidden sm:block">HOME</a> <a href="/blog" class="text-xl font-bold">BLOG</a> <script>
+  // Initialize theme on page load
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  })();
+
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+
+  window.localStorage.setItem('theme', theme);
+
+  // Handle toggle button click
+  document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle?.addEventListener('click', () => {
+      const element = document.documentElement;
+      element.classList.toggle('dark');
+      
+      const isDark = element.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  });
+</script> <button id="theme-toggle" class="w-6 h-6"> <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path> </svg> <svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path> </svg> </button> </div> </nav>   <div style="display: none;" data-pagefind-sort="date[data-date], title[data-title]" data-date="2026-01-06" data-title="2026."></div>  <div data-pagefind-ignore class="px-4 mb-6"> <a href="/blog" class="inline-flex items-center text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"> <path d="m15 18-6-6 6-6"></path> </svg>
+Back to Blog
+</a> </div>  <article class="px-4"> <div class="p-6 rounded-lg border border-neutral-200 dark:border-neutral-800"> <h1 class="text-3xl font-bold mb-3 text-stone-900 dark:text-zinc-50"> 2026. </h1> <div class="flex items-center gap-3 text-sm mb-6 pb-6 border-b border-neutral-200 dark:border-neutral-800"> <time datetime="2026-01-06T06:00:00.000Z" class="text-neutral-600 dark:text-neutral-400"> 01/06/2026 </time> <div class="flex gap-2"> <span class="px-2 py-0.5 text-sm rounded-md bg-neutral-200 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"> post </span> </div> </div> <div class="max-w-none"> <div class="
+    prose
+    dark:prose-invert
+    prose-stone dark:prose-zinc
+    max-w-none
+    prose-headings:font-bold
+    prose-h1:text-3xl prose-h1:mb-6 prose-h1:mt-8
+    prose-h2:text-2xl prose-h2:mb-4 prose-h2:mt-6
+    prose-h3:text-xl prose-h3:mb-3 prose-h3:mt-5
+    prose-p:mb-4 prose-p:leading-relaxed
+    prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+    prose-strong:text-stone-900 dark:prose-strong:text-zinc-200
+    prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-4
+    prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-4
+    prose-li:mb-2
+    prose-blockquote:border-l-4 prose-blockquote:border-stone-300 dark:prose-blockquote:border-zinc-700 
+    prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-stone-600 dark:prose-blockquote:text-zinc-400
+    prose-img:rounded-lg prose-img:shadow-lg
+    prose-code:text-stone-700 dark:prose-code:text-emerald-300 
+    prose-code:bg-stone-100 dark:prose-code:bg-zinc-900 prose-code:rounded prose-code:px-1
+    prose-pre:bg-[#272822] dark:prose-pre:bg-[#272822] prose-pre:p-4 prose-pre:rounded-lg
+    prose-pre:shadow-lg
+    [&_pre_code]:!bg-transparent [&_pre_code]:!text-gray-100
+    [&_pre]:!text-gray-100
+">  <h1 id="2025-review">2025 Review</h1>
+<h2 id="510">5/10</h2>
+<p>In hindsight, a lot of the things that happened to me in 2025 were either just completely out of my control unforseen punishments sent by a depraved and unjust higher being. Or machinations fueled by a lack of urgency and a loss of vision caused by the aforementioned punishments. I’m finding it hard to remember <em>what</em> I exactly did the year. But I know it was a lot. From being held at gunpoint, to understanding what it means to be loved. To a <em>lot</em> of hospitlizations and hours spent in a state of depersonalization. I also had my first psychotic break that year, it was kind of chill nothing to crazy. But yes, 2025 was a lot. And I feel like that’s always going to be life, there is not a person on Earth who hasn’t reached a point at least once during the year where they contemplate, “what the fuck is going on?”. From the ultra-rich fascistic sexual predators that control our markets to single mothers struggling to take care of their children. From the forty year old men with kids they love and wives they hate, to the single-depressed-khhv-incels who doomscroll boards in an endless search for meaning beyond their degenerative, pathetic, lives. Is that what it means to be human? Is this what it means to live? I believe so. Of course, it doesn’t simply end there. But it’s for sure on the list.</p>
+<h1 id="2026">2026</h1>
+<h2 id="the-light-that-floats-within-a-sea-of-darkness">The light that floats within a sea of darkness.</h2>
+<p>I’m not a pessimist, a doomer, nor am I one who thinks too much about their future too much. For the last few years I’ve seen to harbor this <em>deep</em> natal feeling that no matter - I will live the life I want in the end. It doesn’t occur to me how long it will take, nor what challenges I’ll encounter along the way. But it just manifests within me that <em>everything will be okay</em>. It’s been like this since I was young. I would never accredit such a great feeling to a God, nor would I ever say it’s due to how my parent’s raised me. I take full credit for it, I don’t care.</p>
+<h2 id="hopes-goals">Hopes, Goals.</h2>
+<p>I’m scaling Verrum this year. The <em>really</em> hopeful goal is that I’m able to scale to 10k~ MRR. Is this a shot at the moon? Probably. Do I care? No. Do I believe I can do it? Yes.</p>
+<ul>
+<li>I also don’t think I’ll touch alcohol or any drugs past the publication of this post.
+Before 2025 I never did that shit, but it seem’s that I picked up the drug habits, even if I’m not on the same level as normal people. But taking an edible and being high for the whole day is annoying. And when I’m sad the idea of alcohol to drown my sorrows, doesn’t sound very healthy for me. Considering my physical conditions.</li>
+<li>I also want to start building new coping strategies to replace the previously stated ‘drug habits’ :p.</li>
+<li>Also, need to get a new car. Preferably an Audi A7, but I might settle for a beater and call it a day. Not driving around anytime I want is annoying.
+<img src="https://i.ytimg.com/vi/aw9yTLbQlus/maxresdefault.jpg" alt="Sleek black Audi A7 sedan photographed from a front three-quarter angle in a professional studio setting, showcasing the luxury vehicle&#x27;s elegant curves and distinctive LED headlights against a neutral background."></li>
+</ul>
+<p>I have a lot more, but I don’t want to write them all here. But yes, 2026 is a year for growth. What will your year look like?</p>  </div> </div> </div> <!-- Comments Section --> <section data-pagefind-ignore class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800"> <h2 class="text-2xl font-bold mb-6 text-stone-900 dark:text-zinc-50">
+comments
+</h2> <p class="text-neutral-500 dark:text-neutral-500 italic">
+no comments yet. be the first to share your thoughts.
+</p> <form id="comment-form" class="mt-8 p-6 rounded-lg border border-neutral-200 dark:border-neutral-800" data-post-slug="new-years"> <h3 class="text-lg font-bold mb-4 text-stone-900 dark:text-zinc-50">
+leave a comment
+</h3> <!-- Name Selection --> <div class="mb-4"> <label class="block text-sm font-medium mb-2 text-neutral-700 dark:text-neutral-300">
+choose your name
+</label> <!-- Preset Names --> <div class="flex flex-wrap gap-2 mb-3" id="preset-names"> <button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Wanderer" data-selected="true"> Wanderer </button><button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Jester"> Jester </button><button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Fool"> Fool </button><button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Pilgrim"> Pilgrim </button><button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Vagabond"> Vagabond </button><button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Stranger"> Stranger </button><button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Nomad"> Nomad </button><button type="button" class="preset-name px-3 py-1 text-sm rounded-md border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors text-neutral-700 dark:text-neutral-300" data-name="Drifter"> Drifter </button> </div> <!-- Custom Name Toggle --> <button type="button" id="toggle-custom" class="text-sm text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">
+or use a custom name
+</button> <!-- Custom Name Input (hidden by default) --> <div id="custom-name-container" class="hidden mt-3"> <input type="text" id="custom-name" maxlength="30" placeholder="enter your name..." class="w-full px-4 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-stone-900 dark:text-zinc-50 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none placeholder:text-neutral-400 dark:placeholder:text-neutral-600"> <button type="button" id="back-to-preset" class="mt-2 text-sm text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">
+back to preset names
+</button> </div> </div> <!-- Hidden fields to track selection --> <input type="hidden" id="selected-name" name="author" value="Wanderer"> <input type="hidden" id="is-preset" name="isPresetName" value="true"> <!-- Comment Textarea --> <div class="mb-4"> <label for="comment-content" class="block text-sm font-medium mb-2 text-neutral-700 dark:text-neutral-300">
+your thoughts
+</label> <textarea id="comment-content" name="content" rows="4" maxlength="1000" required placeholder="share your thoughts..." class="w-full px-4 py-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-stone-900 dark:text-zinc-50 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none placeholder:text-neutral-400 dark:placeholder:text-neutral-600 resize-none"></textarea> <div class="text-right text-sm text-neutral-500 mt-1"> <span id="char-count">0</span>/1000
+</div> </div> <!-- Submit Button --> <button type="submit" id="submit-btn" class="px-6 py-2 rounded-md border border-neutral-200 dark:border-neutral-800 bg-stone-900 dark:bg-zinc-50 text-zinc-50 dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-zinc-200 font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+submit
+</button> <!-- Status Messages --> <div id="form-status" class="mt-4 hidden"> <p id="status-message" class="text-sm"></p> </div> </form> <script type="module">const v=document.getElementById("comment-form"),u=document.querySelectorAll(".preset-name"),i=document.getElementById("toggle-custom"),E=document.getElementById("custom-name-container"),a=document.getElementById("custom-name"),I=document.getElementById("back-to-preset"),b=document.getElementById("preset-names"),c=document.getElementById("selected-name"),r=document.getElementById("is-preset"),o=document.getElementById("comment-content"),d=document.getElementById("char-count"),s=document.getElementById("submit-btn"),p=document.getElementById("form-status"),l=document.getElementById("status-message");u.forEach(e=>{e.addEventListener("click",()=>{u.forEach(t=>{t.removeAttribute("data-selected"),t.classList.remove("bg-neutral-200","dark:bg-neutral-800")}),e.setAttribute("data-selected","true"),e.classList.add("bg-neutral-200","dark:bg-neutral-800"),c.value=e.dataset.name||"",r.value="true"})});const y=u[0];y&&y.classList.add("bg-neutral-200","dark:bg-neutral-800");i?.addEventListener("click",()=>{b?.classList.add("hidden"),i.classList.add("hidden"),E?.classList.remove("hidden"),a?.focus(),r.value="false"});I?.addEventListener("click",()=>{E?.classList.add("hidden"),b?.classList.remove("hidden"),i?.classList.remove("hidden"),a.value="";const e=document.querySelector(".preset-name[data-selected]");e&&(c.value=e.dataset.name||""),r.value="true"});a?.addEventListener("input",()=>{c.value=a.value});o?.addEventListener("input",()=>{d&&(d.textContent=String(o.value.length))});v?.addEventListener("submit",async e=>{e.preventDefault();const t=v.dataset.postSlug,g=c.value.trim(),f=o.value.trim(),h=r.value==="true";if(!g||!f){n("please fill in all fields.","error");return}s.disabled=!0,s.textContent="submitting...";try{const m=await fetch("/api/comments",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({postSlug:t,author:g,content:f,isPresetName:h})}),B=await m.json();m.ok?(n("comment submitted! it will appear after moderation.","success"),o.value="",d&&(d.textContent="0")):n(B.error||"failed to submit comment.","error")}catch{n("failed to submit comment. please try again.","error")}finally{s.disabled=!1,s.textContent="submit"}});function n(e,t){p&&l&&(p.classList.remove("hidden"),l.textContent=e,l.className=`text-sm ${t==="success"?"text-green-600 dark:text-green-400":"text-red-600 dark:text-red-400"}`)}</script> </section> </article>  </div> </body></html>

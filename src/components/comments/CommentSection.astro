@@ -1,0 +1,36 @@
+---
+import type { Comment, CommentFile } from '../../types/comment';
+import CommentList from './CommentList.astro';
+import CommentForm from './CommentForm.astro';
+
+interface Props {
+    postSlug: string;
+}
+
+const { postSlug } = Astro.props;
+
+// Load approved comments for this post
+let comments: Comment[] = [];
+
+try {
+    const commentFiles = import.meta.glob<CommentFile>('../../data/comments/approved/*.json', { eager: true });
+
+    for (const [path, data] of Object.entries(commentFiles)) {
+        if (path.endsWith(`${postSlug}.json`)) {
+            comments = data.comments || [];
+            break;
+        }
+    }
+} catch {
+    // No comments file exists yet, that's fine
+}
+---
+
+<section data-pagefind-ignore class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+    <h2 class="text-2xl font-bold mb-6 text-stone-900 dark:text-zinc-50">
+        comments
+    </h2>
+
+    <CommentList comments={comments} />
+    <CommentForm postSlug={postSlug} />
+</section>
