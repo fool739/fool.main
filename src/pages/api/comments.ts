@@ -3,9 +3,10 @@ import { generateCommentId, PRESET_NAMES, type Comment, type CommentFile } from 
 
 export const prerender = false;
 
-const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
-const GITHUB_REPO = import.meta.env.GITHUB_REPO || 'your-username/your-repo';
-const GITHUB_BRANCH = import.meta.env.GITHUB_BRANCH || 'main';
+// Use process.env for Vercel serverless compatibility
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_REPO = process.env.GITHUB_REPO || 'your-username/your-repo';
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 
 function sanitize(str: string): string {
     return str
@@ -77,7 +78,7 @@ async function getExistingComments(postSlug: string): Promise<{ comments: Commen
     return { comments: [] };
 }
 
-async function saveComments(postSlug: string, comments: Comment[], sha?: string): Promise<boolean> {
+async function saveComments(postSlug: string, comments: Comment[], sha?: string): Promise<{ ok: boolean; error?: string }> {
     const filePath = `src/data/comments/pending/${postSlug}.json`;
 
     const fileContent: CommentFile = {
@@ -96,20 +97,31 @@ async function saveComments(postSlug: string, comments: Comment[], sha?: string)
         body.sha = sha;
     }
 
-    const response = await fetch(
-        `https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`,
-        {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        }
-    );
+    try {
+        const response = await fetch(
+            `https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            }
+        );
 
-    return response.ok;
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error('GitHub API error:', response.status, errorData);
+            return { ok: false, error: `GitHub API: ${response.status} - ${errorData.message || 'Unknown error'}` };
+        }
+
+        return { ok: true };
+    } catch (err) {
+        console.error('GitHub fetch error:', err);
+        return { ok: false, error: `Fetch error: ${err}` };
+    }
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -147,11 +159,11 @@ export const POST: APIRoute = async ({ request }) => {
         comments.push(comment);
 
         // Save to GitHub
-        const saved = await saveComments(body.postSlug, comments, sha);
+        const result = await saveComments(body.postSlug, comments, sha);
 
-        if (!saved) {
+        if (!result.ok) {
             return new Response(
-                JSON.stringify({ success: false, error: 'Failed to save comment' }),
+                JSON.stringify({ success: false, error: result.error || 'Failed to save comment' }),
                 { status: 500, headers: { 'Content-Type': 'application/json' } }
             );
         }
