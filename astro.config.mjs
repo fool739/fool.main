@@ -5,12 +5,20 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
     site: 'https://www.fool.ltd',
-    adapter: vercel(),
+    adapter: vercel({
+        isr: false,
+        maxDuration: 30
+    }),
     integrations: [tailwind(), pagefind()],
     markdown: {
         shikiConfig: {
             theme: 'monokai',
             wrap: true
+        }
+    },
+    vite: {
+        ssr: {
+            noExternal: ['@astrojs/vercel']
         }
     }
 });
