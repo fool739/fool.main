@@ -1,12 +1,16 @@
 ---
 import SocialLinks from '../components/SocialLinks.astro';
+import NowPlaying from '../components/NowPlaying.astro';
 ---
 
 <header data-pagefind-ignore class="px-4">
     <p class="text-lg leading-relaxed mt-10">
         a man who has died many deaths, and wishes to live many lives. </p>
-        
-    <div class="mt-6 mb-12">
+
+    <div class="mt-6 mb-12 flex flex-col gap-4">
         <SocialLinks />
+        <div class="md:hidden">
+            <NowPlaying />
+        </div>
     </div>
 </header>
