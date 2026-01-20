@@ -2,6 +2,7 @@
 import "../styles/global.css"
 import ThemeToggle from '../components/ThemeToggle.astro';
 import NowPlaying from '../components/NowPlaying.astro';
+import Analytics from '@vercel/analytics/astro'
 ---
 
 <html lang="en">
@@ -52,6 +53,7 @@ import NowPlaying from '../components/NowPlaying.astro';
             <slot />
             
         </div>
+        <Analytics />
     </body>
 </html>
 
