@@ -2,7 +2,7 @@
 title: "The River Styx."
 description: "There are bodies in the water."
 date: "January 30 2026"
-tags: ["fiction", "reflection", "death"]
+tags: ["post"]
 draft: false
 ---
 

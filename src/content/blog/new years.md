@@ -2,7 +2,7 @@
 title: "2026."
 description: "thoughts to enter a new year."
 date: "January 6 2026"
-tags: ["reflection", "goals", "verrum"]
+tags: ["post"]
 draft: false
 ---
 
