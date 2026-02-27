@@ -3,7 +3,7 @@ title: "a hell in me."
 description: "template"
 date: "February 27 2026"
 tags: ["vent"]
-draft: true
+draft: false
 ---
 
 # idk
