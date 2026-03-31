@@ -4,27 +4,54 @@
 <div class="
     prose
     dark:prose-invert
-    prose-stone dark:prose-zinc
     max-w-none
     prose-headings:font-bold
     prose-h1:text-3xl prose-h1:mb-6 prose-h1:mt-8
     prose-h2:text-2xl prose-h2:mb-4 prose-h2:mt-6
     prose-h3:text-xl prose-h3:mb-3 prose-h3:mt-5
     prose-p:mb-4 prose-p:leading-relaxed
-    prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-    prose-strong:text-stone-900 dark:prose-strong:text-zinc-200
+    prose-a:no-underline hover:prose-a:underline
     prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-4
     prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-4
     prose-li:mb-2
-    prose-blockquote:border-l-4 prose-blockquote:border-stone-300 dark:prose-blockquote:border-zinc-700 
-    prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-stone-600 dark:prose-blockquote:text-zinc-400
+    prose-blockquote:border-l-4 prose-blockquote:pl-4 prose-blockquote:italic
     prose-img:rounded-lg prose-img:shadow-lg
-    prose-code:text-stone-700 dark:prose-code:text-emerald-300 
-    prose-code:bg-stone-100 dark:prose-code:bg-zinc-900 prose-code:rounded prose-code:px-1
-    prose-pre:bg-[#272822] dark:prose-pre:bg-[#272822] prose-pre:p-4 prose-pre:rounded-lg
-    prose-pre:shadow-lg
+    prose-code:rounded prose-code:px-1
+    prose-pre:p-4 prose-pre:rounded-lg prose-pre:shadow-lg
     [&_pre_code]:!bg-transparent [&_pre_code]:!text-gray-100
     [&_pre]:!text-gray-100
+"
+style="
+    --tw-prose-body: var(--text);
+    --tw-prose-headings: var(--text);
+    --tw-prose-links: var(--accent);
+    --tw-prose-bold: var(--text);
+    --tw-prose-counters: var(--text-muted);
+    --tw-prose-bullets: var(--text-muted);
+    --tw-prose-hr: var(--border);
+    --tw-prose-quotes: var(--text);
+    --tw-prose-quote-borders: var(--accent);
+    --tw-prose-captions: var(--text-muted);
+    --tw-prose-code: var(--text);
+    --tw-prose-pre-code: #f0e6d0;
+    --tw-prose-pre-bg: #272214;
+    --tw-prose-th-borders: var(--border);
+    --tw-prose-td-borders: var(--border);
+    --tw-prose-invert-body: var(--text);
+    --tw-prose-invert-headings: var(--text);
+    --tw-prose-invert-links: var(--accent);
+    --tw-prose-invert-bold: var(--text);
+    --tw-prose-invert-counters: var(--text-muted);
+    --tw-prose-invert-bullets: var(--text-muted);
+    --tw-prose-invert-hr: var(--border);
+    --tw-prose-invert-quotes: var(--text);
+    --tw-prose-invert-quote-borders: var(--accent);
+    --tw-prose-invert-captions: var(--text-muted);
+    --tw-prose-invert-code: var(--text);
+    --tw-prose-invert-pre-code: #f0e6d0;
+    --tw-prose-invert-pre-bg: #1a1208;
+    --tw-prose-invert-th-borders: var(--border);
+    --tw-prose-invert-td-borders: var(--border);
 ">
     <slot />
 </div>

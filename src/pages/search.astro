@@ -1,217 +1,218 @@
-code\Fool Remake\FM\fool.main\src\pages\search.astro
 ---
 import Base from '../layouts/base.astro';
-import SearchField from '../components/SearchField.astro';
+import "@pagefind/default-ui/css/ui.css";
+
+const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhost:4321/").pathname;
 ---
 
 <Base>
-    <header class="px-4">
-        <p data-pagefind-ignore class="text-lg leading-relaxed mt-10 mb-10">
-            search through the disaster that is my head :3
-        </p>
-    </header>
-
-    <div class="px-4">
-        <SearchField />
+    <div class="px-4 mt-10 mb-6 flex items-center justify-between">
+        <h1 class="text-2xl font-bold" style="color: var(--text);">search</h1>
+        <a href="/blog" class="text-md transition-colors"
+            style="color: var(--text-muted);"
+            onmouseover="this.style.color='var(--accent)'"
+            onmouseout="this.style.color='var(--text-muted)'">
+            ← blog
+        </a>
     </div>
 
-    <style>
-        /* Custom styling */
-        :global([data-pagefind-ui]) {
-            font-family: inherit !important;
-            --pagefind-ui-scale: 1;
-            --pagefind-ui-primary: #1c1917;
-            --pagefind-ui-text: #525252;
-            --pagefind-ui-background: #ffffff;
-            --pagefind-ui-border: #e5e5e5;
-            --pagefind-ui-tag: #f5f5f5;
-        }
-
-        :global(.dark [data-pagefind-ui]) {
-            --pagefind-ui-primary: #fafaf9;
-            --pagefind-ui-text: #a3a3a3;
-            --pagefind-ui-background: #0a0a0a;
-            --pagefind-ui-border: #262626;
-            --pagefind-ui-tag: #262626;
-        }
-
-        /* Search input */
-        :global([data-pagefind-ui] input[type="text"]) {
-            width: 100% !important;
-            padding: 1rem 1rem 1rem 3rem !important; /* Extra left padding for icon */
-            font-size: 1.125rem !important;
-            line-height: 1.75rem !important;
-            border: 1px solid #e5e5e5 !important;
-            border-radius: 0.5rem !important;
-            background: white !important;
-            color: #1c1917 !important;
-            margin-bottom: 1rem !important;
-            transition: all 0.2s ease !important;
-            font-family: inherit !important;
-            box-sizing: border-box !important;
-        }
-
-        :global(.dark [data-pagefind-ui] input[type="text"]) {
-            border-color: #262626 !important;
-            background: #171717 !important;
-            color: #fafaf9 !important;
-        }
-
-        :global([data-pagefind-ui] input[type="text"]:focus) {
-            outline: none !important;
-            border-color: #737373 !important;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
-        }
-
-        :global(.dark [data-pagefind-ui] input[type="text"]:focus) {
-            border-color: #525252 !important;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
-        }
-
-        :global([data-pagefind-ui] input[type="text"]::placeholder) {
-            color: #a3a3a3 !important;
-            opacity: 1 !important;
-        }
-
-        :global(.dark [data-pagefind-ui] input[type="text"]::placeholder) {
-            color: #737373 !important;
-        }
-        :global(.dark [data-pagefind-ui] select) {
-            border-color: #262626 !important;
-            background: #171717 !important;
-            color: #fafaf9 !important;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
-        }
-
-        :global([data-pagefind-ui] select:focus) {
-            outline: none !important;
-            border-color: #737373 !important;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
-        }
-
-        :global(.dark [data-pagefind-ui] select:focus) {
-            border-color: #525252 !important;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
-        }
-
-        /* Results container */
-        :global([data-pagefind-ui-results]) {
-            display: grid !important;
-            gap: 2rem !important;
-            margin: 0 !important;
-        }
-
-        /* Individual result cards */
-        :global([data-pagefind-ui-result]) {
-            border: 1px solid #e5e5e5 !important;
-            border-radius: 0.5rem !important;
-            padding: 1.5rem !important;
-            background: white !important;
-            transition: border-color 0.2s ease !important;
-            margin: 0 !important;
-            display: block !important;
-        }
-
-        :global(.dark [data-pagefind-ui-result]) {
-            border-color: #262626 !important;
-            background: #0a0a0a !important;
-        }
-
-        :global([data-pagefind-ui-result]:hover) {
-            border-color: #737373 !important;
-        }
-
-        :global(.dark [data-pagefind-ui-result]:hover) {
-            border-color: #525252 !important;
-        }
-
-        /* Result titles */
-        :global([data-pagefind-ui-result-title]) {
-            font-size: 1.5rem !important;
-            font-weight: 700 !important;
-            color: #1c1917 !important;
-            margin-bottom: 0.5rem !important;
-            line-height: 1.25 !important;
-        }
-
-        :global(.dark [data-pagefind-ui-result-title]) {
-            color: #fafaf9 !important;
-        }
-
-        :global([data-pagefind-ui-result-title] a) {
-            color: inherit !important;
-            text-decoration: none !important;
-        }
-
-        /* Result excerpts */
-        :global([data-pagefind-ui-result-excerpt]) {
-            color: #525252 !important;
-            line-height: 1.6 !important;
-            margin-bottom: 0.75rem !important;
-            font-size: 1rem !important;
-        }
-
-        :global(.dark [data-pagefind-ui-result-excerpt]) {
-            color: #a3a3a3 !important;
-        }
-
-        /* Result URLs */
-        :global([data-pagefind-ui-result-url]) {
-            font-size: 0.875rem !important;
-            color: #737373 !important;
-            margin: 0 !important;
-        }
-
-        /* Tags */
-        :global([data-pagefind-ui-result-tags]) {
-            display: flex !important;
-            gap: 0.5rem !important;
-            flex-wrap: wrap !important;
-            margin-top: 0.75rem !important;
-        }
-
-        :global([data-pagefind-ui-result-tag]) {
-            background: #f5f5f5 !important;
-            border: 1px solid #e5e5e5 !important;
-            border-radius: 0.25rem !important;
-            padding: 0.25rem 0.5rem !important;
-            font-size: 0.75rem !important;
-            color: #525252 !important;
-            text-decoration: none !important;
-        }
-
-        :global(.dark [data-pagefind-ui-result-tag]) {
-            background: #262626 !important;
-            border-color: #262626 !important;
-            color: #a3a3a3 !important;
-        }
-
-        /* Messages */
-        :global([data-pagefind-ui-message]) {
-            color: #525252 !important;
-            text-align: center !important;
-            padding: 3rem 0 !important;
-            font-style: italic !important;
-            font-size: 1rem !important;
-        }
-
-        :global(.dark [data-pagefind-ui-message]) {
-            color: #a3a3a3 !important;
-        }
-
-        /* Hide unwanted elements */
-        :global([data-pagefind-ui-drawer]),
-        :global([data-pagefind-ui-button]) {
-            display: none !important;
-        }
-
-        /* Clean up spacing */
-        :global([data-pagefind-ui]) {
-            margin: 0 !important;
-        }
-
-        :global([data-pagefind-ui] *) {
-            font-family: inherit !important;
-        }
-    </style>
+    <div class="px-4">
+        <div data-pagefind-ui data-bundle-path={bundlePath}></div>
+    </div>
 </Base>
+
+<script>
+    import { PagefindUI } from "@pagefind/default-ui";
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const el = document.querySelector("[data-pagefind-ui]");
+        if (!el) return;
+
+        new PagefindUI({
+            element: "[data-pagefind-ui]",
+            bundlePath: el.getAttribute("data-bundle-path") || "/pagefind/",
+            showImages: false,
+            debounceTimeoutMs: 150,
+            showSubResults: true,
+            excerptLength: 40,
+            resetStyles: false,
+        });
+
+        const input = el.querySelector<HTMLInputElement>('input[type="text"]');
+        if (input) input.placeholder = "What are you looking for?";
+    });
+</script>
+
+<style>
+    /* Pagefind token variables */
+    :global([data-pagefind-ui]) {
+        font-family: inherit !important;
+        --pagefind-ui-scale: 1;
+        --pagefind-ui-primary: #C97B2A;
+        --pagefind-ui-text: #2C1A00;
+        --pagefind-ui-background: transparent;
+        --pagefind-ui-border: #D4B896;
+        --pagefind-ui-border-radius: 0;
+        --pagefind-ui-tag: #F0E4C0;
+        --pagefind-ui-font: inherit;
+    }
+
+    :global(.dark [data-pagefind-ui]) {
+        --pagefind-ui-primary: #D4943A;
+        --pagefind-ui-text: #F0E0C0;
+        --pagefind-ui-background: transparent;
+        --pagefind-ui-border: #3D2E1A;
+        --pagefind-ui-tag: #261E14;
+    }
+
+    /* All elements inherit font, no radius */
+    :global([data-pagefind-ui] *) {
+        font-family: inherit !important;
+        border-radius: 0 !important;
+    }
+
+    /* Hide pagefind's own search icon — we don't fight it here */
+    :global([data-pagefind-ui] .pagefind-ui__search-icon) {
+        display: none !important;
+    }
+
+    /* Input */
+    :global([data-pagefind-ui] input[type="text"]) {
+        width: 100% !important;
+        padding: 0.75rem 1rem 0.75rem 3.5rem !important;
+        font-size: 1rem !important;
+        border: 1px solid var(--border) !important;
+        background: var(--bg-card) !important;
+        color: var(--text) !important;
+        transition: border-color 0.2s ease !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+
+    /* Kill any form wrapper margin/padding pagefind adds */
+    :global([data-pagefind-ui] form) {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    :global([data-pagefind-ui] input[type="text"]:focus) {
+        outline: none !important;
+        border-color: #C97B2A !important;
+        box-shadow: none !important;
+    }
+
+    :global(.dark [data-pagefind-ui] input[type="text"]:focus) {
+        border-color: #D4943A !important;
+    }
+
+    :global([data-pagefind-ui] input[type="text"]::placeholder) {
+        color: var(--text-muted) !important;
+        opacity: 1 !important;
+    }
+
+    /* Clear button */
+    :global([data-pagefind-ui] .pagefind-ui__search-clear) {
+        background: transparent !important;
+        color: var(--text-muted) !important;
+        border: none !important;
+        padding: 0 0.75rem !important;
+    }
+
+    :global([data-pagefind-ui] .pagefind-ui__search-clear:hover) {
+        color: var(--accent) !important;
+    }
+
+    /* Result count message */
+    :global([data-pagefind-ui] .pagefind-ui__message) {
+        color: var(--text-muted) !important;
+        font-size: 0.85rem !important;
+        padding: 1rem 0 0.5rem !important;
+    }
+
+    /* Result list */
+    :global([data-pagefind-ui] .pagefind-ui__results) {
+        margin-top: 0.5rem !important;
+    }
+
+    /* Individual result */
+    :global([data-pagefind-ui] .pagefind-ui__result) {
+        border-bottom: 1px solid var(--border) !important;
+        border-left: 3px solid transparent !important;
+        padding: 1.25rem 0.75rem !important;
+        margin: 0 -0.75rem !important;
+        transition: border-left-color 0.15s ease, background 0.15s ease !important;
+        list-style: none !important;
+    }
+
+    :global([data-pagefind-ui] .pagefind-ui__result:hover) {
+        border-left-color: #C97B2A !important;
+        background: rgba(201,123,42,0.05) !important;
+    }
+
+    :global(.dark [data-pagefind-ui] .pagefind-ui__result:hover) {
+        border-left-color: #D4943A !important;
+        background: rgba(212,148,58,0.05) !important;
+    }
+
+    /* Result link / title */
+    :global([data-pagefind-ui] .pagefind-ui__result-link) {
+        font-size: 1.1rem !important;
+        font-weight: bold !important;
+        color: var(--text) !important;
+        text-decoration: none !important;
+    }
+
+    :global([data-pagefind-ui] .pagefind-ui__result-link:hover) {
+        color: var(--accent) !important;
+    }
+
+    /* Excerpt */
+    :global([data-pagefind-ui] .pagefind-ui__result-excerpt) {
+        color: var(--text-muted) !important;
+        font-size: 0.9rem !important;
+        margin-top: 0.35rem !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Highlight marks */
+    :global([data-pagefind-ui] mark) {
+        background: rgba(201,123,42,0.25) !important;
+        color: inherit !important;
+        padding: 0 2px !important;
+    }
+
+    :global(.dark [data-pagefind-ui] mark) {
+        background: rgba(212,148,58,0.3) !important;
+    }
+
+    /* Sub-results */
+    :global([data-pagefind-ui] .pagefind-ui__result-nested) {
+        border-left: 2px solid var(--border) !important;
+        margin-left: 1rem !important;
+        padding-left: 0.75rem !important;
+        margin-top: 0.5rem !important;
+    }
+
+    /* Load more button */
+    :global([data-pagefind-ui] .pagefind-ui__button) {
+        display: block !important;
+        margin: 2rem auto 0 !important;
+        padding: 0.6rem 2rem !important;
+        border: 1px solid var(--border) !important;
+        background: var(--bg-card) !important;
+        color: var(--text) !important;
+        cursor: pointer !important;
+        font-family: inherit !important;
+        font-size: 0.9rem !important;
+        transition: border-color 0.2s, color 0.2s !important;
+    }
+
+    :global([data-pagefind-ui] .pagefind-ui__button:hover) {
+        border-color: var(--accent) !important;
+        color: var(--accent) !important;
+    }
+
+    :global([data-pagefind-ui-drawer]) {
+        display: none !important;
+    }
+</style>

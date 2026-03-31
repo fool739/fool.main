@@ -36,22 +36,24 @@ import Analytics from '@vercel/analytics/astro'
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     </head>
 
-    <body>
+    <body style="background-color: var(--bg); color: var(--text);">
         <div class="max-w-3xl mx-auto py-6 px-4 lg:px-6">
-            <nav class="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full select-none py-4 gap-4">
-                <a href="/" class="font-semibold text-3xl text-center sm:text-left">fool.ltd</a>
+            <nav class="fade-in fade-in-1 flex flex-col sm:flex-row sm:justify-between sm:items-center w-full select-none py-4 gap-4">
+                <a href="/" class="font-semibold text-3xl text-center sm:text-left" style="color: var(--accent);">fool.ltd</a>
                 <div class="hidden md:block">
                     <NowPlaying />
                 </div>
                 <div class="flex items-center justify-center sm:justify-start gap-6">
-                    <a href="/" class="text-xl font-bold hidden sm:block">HOME</a>
-                    <a href="/blog" class="text-xl font-bold">BLOG</a>
+                    <a href="/" class="text-xl font-bold hidden sm:block transition-colors" style="color: var(--text);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">HOME</a>
+                    <a href="/blog" class="text-xl font-bold transition-colors" style="color: var(--text);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">BLOG</a>
                     <ThemeToggle />
                 </div>
             </nav>
 
-            <slot />
-            
+            <div class="fade-in fade-in-2">
+                <slot />
+            </div>
+
         </div>
         <Analytics />
     </body>

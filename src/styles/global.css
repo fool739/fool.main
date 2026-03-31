@@ -4,17 +4,60 @@
 
 @layer base {
     :root {
-        @apply bg-zinc-50 text-stone-900;
+        --bg: #FEFAE8;
+        --bg-card: #FDF5D6;
+        --bg-card-hover: #FAF0C4;
+        --text: #2C1A00;
+        --text-muted: #7A5C3A;
+        --border: #D4B896;
+        --border-hover: #B8925A;
+        --accent: #C97B2A;
+        --accent-hover: #A86220;
+        background-color: var(--bg);
+        color: var(--text);
     }
-    
+
     :root.dark {
-        @apply bg-neutral-950 text-zinc-50;
+        --bg: #161009;
+        --bg-card: #1E1610;
+        --bg-card-hover: #261E14;
+        --text: #F0E0C0;
+        --text-muted: #A08060;
+        --border: #3D2E1A;
+        --border-hover: #6B4E2A;
+        --accent: #D4943A;
+        --accent-hover: #E8A84A;
+        background-color: var(--bg);
+        color: var(--text);
     }
 }
 
-html,body {
+html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: monospace;
 }
+
+/* Fade-in animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeUp 0.5s ease both;
+}
+
+.fade-in-1 { animation-delay: 0.05s; }
+.fade-in-2 { animation-delay: 0.12s; }
+.fade-in-3 { animation-delay: 0.19s; }
+.fade-in-4 { animation-delay: 0.26s; }
+.fade-in-5 { animation-delay: 0.33s; }
+.fade-in-6 { animation-delay: 0.40s; }

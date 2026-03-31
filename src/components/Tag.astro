@@ -1,17 +1,54 @@
 ---
 const { name } = Astro.props;
 
-const tagStyles = {
-    update: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-    life: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-    rant: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-    blog: 'bg-neutral-200 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300',
-    default: 'bg-neutral-200 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
+// Colors defined as inline style tuples: [light bg, light text, dark bg, dark text]
+// Using inline styles to avoid Tailwind purge issues with dynamic class names
+const tagColors: Record<string, { bg: string; text: string }> = {
+    vent:    { bg: 'rgba(251,146,60,0.15)',  text: '#c2410c' },   // orange
+    post:    { bg: 'rgba(234,179,8,0.15)',   text: '#854d0e' },   // yellow-amber
+    update:  { bg: 'rgba(245,158,11,0.15)',  text: '#92400e' },   // amber
+    life:    { bg: 'rgba(52,211,153,0.15)',  text: '#065f46' },   // emerald
+    rant:    { bg: 'rgba(239,68,68,0.15)',   text: '#991b1b' },   // red
+    blog:    { bg: 'rgba(201,123,42,0.15)',  text: '#7c4a03' },   // saffron
+    other:   { bg: 'rgba(180,160,130,0.12)', text: '#7a5c3a' },   // muted warm
 };
 
-const tagStyle = tagStyles[name.toLowerCase() as keyof typeof tagStyles] || tagStyles.default;
+const darkTagColors: Record<string, { bg: string; text: string }> = {
+    vent:    { bg: 'rgba(251,146,60,0.2)',   text: '#fb923c' },
+    post:    { bg: 'rgba(234,179,8,0.2)',    text: '#fbbf24' },
+    update:  { bg: 'rgba(245,158,11,0.2)',   text: '#fcd34d' },
+    life:    { bg: 'rgba(52,211,153,0.2)',   text: '#6ee7b7' },
+    rant:    { bg: 'rgba(239,68,68,0.2)',    text: '#fca5a5' },
+    blog:    { bg: 'rgba(212,148,58,0.2)',   text: '#d4943a' },
+    other:   { bg: 'rgba(180,160,130,0.15)', text: '#a08060' },
+};
+
+const key = name.toLowerCase() in tagColors ? name.toLowerCase() : 'other';
 ---
 
-<span class={`px-2 py-0.5 text-sm rounded-md ${tagStyle}`}>
+<span
+    class="tag-pill px-2 py-0.5 text-sm rounded-md"
+    data-tag={key}
+    style={`background-color: ${tagColors[key].bg}; color: ${tagColors[key].text};`}
+    data-light-bg={tagColors[key].bg}
+    data-light-text={tagColors[key].text}
+    data-dark-bg={darkTagColors[key].bg}
+    data-dark-text={darkTagColors[key].text}
+>
     {name}
 </span>
+
+<script>
+    function applyTagTheme() {
+        const isDark = document.documentElement.classList.contains('dark');
+        document.querySelectorAll<HTMLElement>('.tag-pill').forEach(el => {
+            el.style.backgroundColor = isDark ? el.dataset.darkBg! : el.dataset.lightBg!;
+            el.style.color = isDark ? el.dataset.darkText! : el.dataset.lightText!;
+        });
+    }
+
+    applyTagTheme();
+
+    const observer = new MutationObserver(applyTagTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+</script>
