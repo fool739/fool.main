@@ -2,13 +2,14 @@
 const DISCORD_ID = "720005508173529169";
 ---
 
-<div class="now-playing hidden items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-    <span class="text-neutral-400 dark:text-neutral-500">Now Playing:</span>
+<div class="now-playing hidden items-center gap-2 text-sm" style="color: var(--text-muted)">
+    <span style="color: var(--text-muted)">Now Playing:</span>
     <a
-        class="spotify-link hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors truncate max-w-[200px]"
+        class="spotify-link transition-colors truncate max-w-[200px]"
         href="#"
         target="_blank"
         rel="noopener noreferrer"
+        style="color: var(--text); text-decoration: none;"
     >
         <span class="song-name"></span>
     </a>
