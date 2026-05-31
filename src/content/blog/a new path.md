@@ -3,7 +3,7 @@ title: "one foot down"
 description: "a new path"
 date: "April 1 2026"
 tags: ["thoughts"]
-draft: false
+draft: true
 ---
 
 # Walking 

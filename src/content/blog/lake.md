@@ -3,7 +3,7 @@ title: "another restart"
 description: "a new iteration"
 date: "May 9 2026"
 tags: ["thoughts"]
-draft: false
+draft: true
 ---
 
 # Birthday
