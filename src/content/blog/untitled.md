@@ -7,7 +7,7 @@ draft: false
 ---
 
 I've always wanted to be happy. Since I was a child. Since I was around twelve. 
-I need to address two questions you might have before I can continue in good faith: "everyone wants to be happy" and "why twelve?"
+ I need to address two questions you might have before I can continue in good faith: "everyone wants to be happy" and "why twelve?"
 
 # Everyone wants to be happy.
 Yes, this is true. This is a fundamental truth. And the reality of the world. Everyone in one shape or form yearns for happiness in whichever fashion they can find or create it. I'm not going to act like I'm cut from a different cloth or a wolf among sheep. I've always wanted happiness. But to me personally I've always felt happiness in a different form rather than joy or content with my state of being. I could be happy and joyful, but deep down, I still feel like I'm rather lacking something. 
