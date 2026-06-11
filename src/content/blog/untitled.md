@@ -3,7 +3,7 @@ title: "untitled"
 description: "a work in progress"
 date: "June 1 2026"
 tags: ["thoughts"]
-draft: false    
+draft: true    
 ---
 
 I've always wanted to be happy. Since I was a child. Since I was around twelve. 
