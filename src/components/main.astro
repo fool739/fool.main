@@ -76,7 +76,7 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
             </div>
             <div class="flex flex-1 items-baseline gap-2 px-3 py-2">
-                <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Total Posts</span>
+                <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400 sm:w-auto">Total Posts</span>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
                 <a href="/blog" title="all posts" class="glow-hover min-w-0 flex-1 truncate text-neutral-800 no-underline transition-colors hover:text-neutral-500 dark:text-neutral-200 dark:hover:text-neutral-400">{posts.length}</a>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
@@ -92,7 +92,7 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
             </div>
             <div class="flex flex-1 items-baseline gap-2 px-3 py-2">
-                <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Task</span>
+                <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400 sm:w-auto">Task</span>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
                 <span class="min-w-0 flex-1 truncate text-neutral-800 dark:text-neutral-200">{status.current_task}</span>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
@@ -128,9 +128,10 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
         </div>
 
         <!-- links row with svg icons in the brackets -->
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
-            <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Links</span>
+        <div class="flex items-start gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
+            <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400 sm:w-auto">Links</span>
 
+            <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-1">
             <a href="mailto:jester@fool.ltd" class="group glow-hover inline-flex items-center gap-1 text-neutral-500 no-underline transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
                 <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
                 <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -170,6 +171,7 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
                 RSS
             </a>
+            </div>
         </div>
 
         <!-- bottom notice -->
