@@ -27,6 +27,39 @@ body {
     background-color: var(--shiki-dark-bg) !important;
 }
 
+/* CRT phosphor glow (colors pulled from the Tailwind palette) */
+.text-glow {
+    text-shadow:
+        0 0 8px theme('colors.neutral.500 / 45%'),
+        0 0 20px theme('colors.neutral.500 / 20%');
+}
+
+.dark .text-glow {
+    text-shadow:
+        0 0 8px theme('colors.neutral.100 / 55%'),
+        0 0 22px theme('colors.neutral.100 / 25%');
+}
+
+.glow-hover:hover {
+    text-shadow:
+        0 0 6px theme('colors.neutral.600 / 55%'),
+        0 0 14px theme('colors.neutral.600 / 25%');
+}
+
+.glow-hover:hover svg {
+    filter: drop-shadow(0 0 3px theme('colors.neutral.600 / 60%'));
+}
+
+.dark .glow-hover:hover {
+    text-shadow:
+        0 0 6px theme('colors.neutral.100 / 60%'),
+        0 0 14px theme('colors.neutral.100 / 30%');
+}
+
+.dark .glow-hover:hover svg {
+    filter: drop-shadow(0 0 3px theme('colors.neutral.100 / 65%'));
+}
+
 /* Fade-in animation */
 @keyframes fadeUp {
     from {

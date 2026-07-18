@@ -49,7 +49,7 @@ const files = posts.map(post => {
                             href={`/blog/${file.slug}`}
                             title={file.title}
                             class:list={[
-                                'block truncate py-1 pl-6 pr-3 no-underline transition-colors',
+                                'glow-hover block truncate py-1 pl-6 pr-3 no-underline transition-colors',
                                 file.slug === activeSlug
                                     ? 'bg-neutral-200/70 text-neutral-900 dark:bg-neutral-800/70 dark:text-neutral-100'
                                     : 'text-neutral-500 hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100',
@@ -63,17 +63,17 @@ const files = posts.map(post => {
             <ul class="flex flex-col">
                 <li>
                     <a href="/blog" class:list={[
-                        'block truncate py-1 pl-6 pr-3 no-underline transition-colors',
+                        'glow-hover block truncate py-1 pl-6 pr-3 no-underline transition-colors',
                         activeSlug === null
                             ? 'bg-neutral-200/70 text-neutral-900 dark:bg-neutral-800/70 dark:text-neutral-100'
                             : 'text-neutral-500 hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100',
                     ]}>index.md</a>
                 </li>
                 <li>
-                    <a href="/search" class="block truncate py-1 pl-6 pr-3 text-neutral-500 no-underline transition-colors hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100">search.md</a>
+                    <a href="/search" class="glow-hover block truncate py-1 pl-6 pr-3 text-neutral-500 no-underline transition-colors hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100">search.md</a>
                 </li>
                 <li>
-                    <a href="/rss.xml" class="block truncate py-1 pl-6 pr-3 text-neutral-500 no-underline transition-colors hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100">rss.xml</a>
+                    <a href="/rss.xml" class="glow-hover block truncate py-1 pl-6 pr-3 text-neutral-500 no-underline transition-colors hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100">rss.xml</a>
                 </li>
             </ul>
         </aside>

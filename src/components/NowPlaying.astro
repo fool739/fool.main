@@ -15,7 +15,7 @@ const { variant = 'nav' } = Astro.props;
     <div class="now-playing hidden items-center gap-2 text-sm text-neutral-500" data-variant="nav">
         <span class="select-none">&#9834;</span>
         <a
-            class="spotify-link max-w-[200px] truncate text-neutral-600 no-underline transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+            class="spotify-link glow-hover max-w-[200px] truncate text-neutral-600 no-underline transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
             href="#"
             target="_blank"
             rel="noopener noreferrer"
@@ -26,7 +26,7 @@ const { variant = 'nav' } = Astro.props;
 ) : (
     <span class="now-playing min-w-0" data-variant="stat">
         <a
-            class="spotify-link pointer-events-none inline-block max-w-full truncate align-bottom text-neutral-500 no-underline transition-colors dark:text-neutral-500"
+            class="spotify-link glow-hover pointer-events-none inline-block max-w-full truncate align-bottom text-neutral-500 no-underline transition-colors dark:text-neutral-500"
             href="#"
             target="_blank"
             rel="noopener noreferrer"
