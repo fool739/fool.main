@@ -1,0 +1,95 @@
+---
+// aureal.dev-style shell: file-tree drawer on the left, central content box.
+import { getCollection } from 'astro:content';
+
+interface Props {
+    activeSlug?: string | null;
+}
+
+const { activeSlug = null } = Astro.props;
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const files = posts.map(post => {
+    const slug = post.id.replace(/\.[^.]+$/, '');
+    return { slug, title: post.data.title };
+});
+---
+
+<div class="flex flex-1 flex-col border border-neutral-200 dark:border-neutral-800">
+    <!-- top bar -->
+    <div class="flex items-center gap-3 border-b border-neutral-200 px-3 py-2 text-xs dark:border-neutral-800">
+        <button
+            id="drawer-toggle"
+            class="select-none text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100 md:hidden"
+            aria-label="toggle file tree"
+        >[=]</button>
+        <span class="font-bold text-neutral-700 dark:text-neutral-300">fool.ltd</span>
+        <span class="text-neutral-400 dark:text-neutral-600">
+            /blog{activeSlug ? `/${activeSlug}.md` : ''}
+        </span>
+    </div>
+
+    <div class="flex flex-1 items-stretch">
+        <!-- drawer / file tree -->
+        <aside
+            id="blog-drawer"
+            data-pagefind-ignore
+            class="hidden w-52 shrink-0 border-r border-neutral-200 py-3 text-xs dark:border-neutral-800 md:block"
+        >
+            <p class="select-none px-3 pb-2 text-neutral-400 dark:text-neutral-600">&#9662; blog/</p>
+            <ul class="flex flex-col">
+                {files.length === 0 && (
+                    <li class="select-none py-1 pl-6 pr-3 italic text-neutral-400 dark:text-neutral-600">empty</li>
+                )}
+                {files.map(file => (
+                    <li>
+                        <a
+                            href={`/blog/${file.slug}`}
+                            title={file.title}
+                            class:list={[
+                                'glow-hover block truncate py-1 pl-6 pr-3 no-underline transition-colors',
+                                file.slug === activeSlug
+                                    ? 'bg-neutral-200/70 text-neutral-900 dark:bg-neutral-800/70 dark:text-neutral-100'
+                                    : 'text-neutral-500 hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100',
+                            ]}
+                        >{file.slug}.md</a>
+                    </li>
+                ))}
+            </ul>
+
+            <p class="mt-4 select-none px-3 pb-2 text-neutral-400 dark:text-neutral-600">&#9662; meta/</p>
+            <ul class="flex flex-col">
+                <li>
+                    <a href="/blog" class:list={[
+                        'glow-hover block truncate py-1 pl-6 pr-3 no-underline transition-colors',
+                        activeSlug === null
+                            ? 'bg-neutral-200/70 text-neutral-900 dark:bg-neutral-800/70 dark:text-neutral-100'
+                            : 'text-neutral-500 hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100',
+                    ]}>index.md</a>
+                </li>
+                <li>
+                    <a href="/search" class="glow-hover block truncate py-1 pl-6 pr-3 text-neutral-500 no-underline transition-colors hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100">search.md</a>
+                </li>
+                <li>
+                    <a href="/rss.xml" class="glow-hover block truncate py-1 pl-6 pr-3 text-neutral-500 no-underline transition-colors hover:bg-neutral-200/40 hover:text-neutral-900 dark:hover:bg-neutral-800/40 dark:hover:text-neutral-100">rss.xml</a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- central panel -->
+        <section class="min-w-0 flex-1 p-4 sm:p-6">
+            <slot />
+        </section>
+    </div>
+</div>
+
+<script>
+    const toggle = document.getElementById('drawer-toggle');
+    const drawer = document.getElementById('blog-drawer');
+
+    toggle?.addEventListener('click', () => {
+        drawer?.classList.toggle('hidden');
+    });
+</script>

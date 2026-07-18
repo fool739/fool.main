@@ -1,16 +1,186 @@
 ---
-import SocialLinks from '../components/SocialLinks.astro';
+import { getCollection } from 'astro:content';
 import NowPlaying from '../components/NowPlaying.astro';
+import status from '../data/status.json';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const latest = posts[0];
+const latestSlug = latest ? latest.id.replace(/\.[^.]+$/, '') : null;
+
+function timeAgo(date: Date): string {
+    const seconds = Math.floor((Date.now() - date.valueOf()) / 1000);
+    const units: [number, string][] = [
+        [31536000, 'y'],
+        [2592000, 'mo'],
+        [604800, 'w'],
+        [86400, 'd'],
+        [3600, 'h'],
+        [60, 'm'],
+    ];
+    for (const [span, label] of units) {
+        const value = Math.floor(seconds / span);
+        if (value >= 1) return `${value}${label} ago`;
+    }
+    return 'just now';
+}
+
+const ascii = `░▒▓████████▓▒░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░
+░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░
+░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░
+░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░
+░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░
+░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░
+░▒▓█▓▒░      ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓████████▓▒░`;
 ---
 
-<header data-pagefind-ignore class="px-4">
-    <p class="text-lg leading-relaxed mt-10">
-        live to die</p>
+<header data-pagefind-ignore class="flex flex-1 flex-col items-center justify-center py-10">
 
-    <div class="mt-6 mb-12 flex flex-col gap-4">
-        <SocialLinks />
-        <div class="md:hidden">
-            <NowPlaying />
+    <!-- bios / release-info panel -->
+    <div class="w-full max-w-xl border border-neutral-300 bg-neutral-100/60 text-xs dark:border-neutral-700 dark:bg-neutral-900/60">
+
+        <!-- block wordmark -->
+        <div class="border-b border-neutral-300 px-3 py-4 dark:border-neutral-700">
+            <pre aria-hidden="true" class="text-glow mx-auto w-fit max-w-full select-none overflow-x-auto text-[7px] leading-tight text-neutral-900 dark:text-neutral-100 sm:text-[10px]">{ascii}</pre>
+        </div>
+
+        <!-- status -->
+        <div class="flex items-baseline gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
+            <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400">Status</span>
+            <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+            <span class="min-w-0 flex-1 truncate text-neutral-800 dark:text-neutral-200">{status.status}</span>
+            <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+        </div>
+
+        <!-- latest post (auto) -->
+        <div class="flex items-baseline gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
+            <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400">Latest Post</span>
+            <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+            {latest ? (
+                <a href={`/blog/${latestSlug}`} class="glow-hover min-w-0 flex-1 truncate text-neutral-800 no-underline transition-colors hover:text-neutral-500 dark:text-neutral-200 dark:hover:text-neutral-400">
+                    {latest.data.title}
+                </a>
+            ) : (
+                <span class="min-w-0 flex-1 truncate text-neutral-500">none yet</span>
+            )}
+            <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+        </div>
+
+        <!-- released | total posts -->
+        <div class="flex flex-col border-b border-neutral-300 dark:border-neutral-700 sm:flex-row">
+            <div class="flex flex-1 items-baseline gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700 sm:border-b-0 sm:border-r">
+                <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400">Released</span>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <span class="min-w-0 flex-1 truncate text-neutral-800 dark:text-neutral-200">{latest ? timeAgo(latest.data.date) : 'never'}</span>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+            </div>
+            <div class="flex flex-1 items-baseline gap-2 px-3 py-2">
+                <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Total Posts</span>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <a href="/blog" title="all posts" class="glow-hover min-w-0 flex-1 truncate text-neutral-800 no-underline transition-colors hover:text-neutral-500 dark:text-neutral-200 dark:hover:text-neutral-400">{posts.length}</a>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+            </div>
+        </div>
+
+        <!-- location | current task -->
+        <div class="flex flex-col border-b border-neutral-300 dark:border-neutral-700 sm:flex-row">
+            <div class="flex flex-1 items-baseline gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700 sm:border-b-0 sm:border-r">
+                <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400">Location</span>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <span class="min-w-0 flex-1 truncate text-neutral-800 dark:text-neutral-200">{status.location}</span>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+            </div>
+            <div class="flex flex-1 items-baseline gap-2 px-3 py-2">
+                <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Task</span>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <span class="min-w-0 flex-1 truncate text-neutral-800 dark:text-neutral-200">{status.current_task}</span>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+            </div>
+        </div>
+
+        <!-- reading -->
+        <div class="flex items-baseline gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
+            <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400">Reading</span>
+            <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+            <span class="min-w-0 flex-1 truncate text-neutral-800 dark:text-neutral-200">{status.current_reading}</span>
+            <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+        </div>
+
+        <!-- now playing (live via lanyard) -->
+        <div class="flex items-baseline gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
+            <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400">Now Playing</span>
+            <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+            <span class="min-w-0 flex-1">
+                <NowPlaying variant="stat" />
+            </span>
+            <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+        </div>
+
+        <!-- description block -->
+        <div class="flex items-stretch gap-3 border-b border-neutral-300 px-3 py-3 dark:border-neutral-700">
+            <span class="w-24 shrink-0 self-start text-neutral-600 dark:text-neutral-400">Description</span>
+            <span aria-hidden="true" class="select-none border-l border-neutral-400 dark:border-neutral-600"></span>
+            <div class="flex-1 leading-relaxed text-neutral-500">
+                <p>live to die, dance on the edge.</p>
+            </div>
+            <span aria-hidden="true" class="select-none border-r border-neutral-400 dark:border-neutral-600"></span>
+        </div>
+
+        <!-- links row with svg icons in the brackets -->
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
+            <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Links</span>
+
+            <a href="mailto:jester@fool.ltd" class="group glow-hover inline-flex items-center gap-1 text-neutral-500 no-underline transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M3 8L10.89 13.26C11.2187 13.4793 11.6049 13.5963 12 13.5963C12.3951 13.5963 12.7813 13.4793 13.11 13.26L21 8M5 19H19C19.5304 19 20.0391 18.7893 20.4142 18.4142C20.7893 18.0391 21 17.5304 21 17V7C21 6.46957 20.7893 5.96086 20.4142 5.58579C20.0391 5.21071 19.5304 5 19 5H5C4.46957 5 3.96086 5.21071 3.58579 5.58579C3.21071 5.96086 3 6.46957 3 7V17C3 17.5304 3.21071 18.0391 3.58579 18.4142C3.96086 18.7893 4.46957 19 5 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+                Email
+            </a>
+
+            <a href="https://discord.gg/M6NfuNSrZd" target="_blank" rel="noopener noreferrer" class="group glow-hover inline-flex items-center gap-1 text-neutral-500 no-underline transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+                Discord
+            </a>
+
+            <a href="https://instagram.com/egocni" target="_blank" rel="noopener noreferrer" class="group glow-hover inline-flex items-center gap-1 text-neutral-500 no-underline transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="currentColor" stroke-width="2"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+                Instagram
+            </a>
+
+            <a href="/rss.xml" class="group glow-hover inline-flex items-center gap-1 text-neutral-500 no-underline transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
+                <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4 11a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 4a16 16 0 0 1 16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="5" cy="19" r="1.5" fill="currentColor"/>
+                </svg>
+                <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
+                RSS
+            </a>
+        </div>
+
+        <!-- bottom notice -->
+        <div class="px-3 py-2 text-center text-neutral-500">
+            writing on my <a href="/blog" class="text-neutral-700 underline decoration-dotted underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100">blog</a>
         </div>
     </div>
+
+    <!-- copyright rule -->
+    <p class="mt-4 flex w-full max-w-xl select-none items-center gap-3 text-[10px] text-neutral-400 dark:text-neutral-600">
+        <span aria-hidden="true" class="flex-1 border-t border-neutral-300 dark:border-neutral-700"></span>
+        be a fool.
+        <span aria-hidden="true" class="flex-1 border-t border-neutral-300 dark:border-neutral-700"></span>
+    </p>
 </header>

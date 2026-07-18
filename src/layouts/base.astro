@@ -28,37 +28,38 @@ import Analytics from '@vercel/analytics/astro'
         <meta name="twitter:title" content=""FOOL"">
         <meta name="twitter:description" content="LIVE ON THE EDGE">
         <meta name="twitter:image" content="/favicon/death.jpg">
-        
+
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="/favicon/fav.ico"/>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="d8e96799-7738-465a-9a54-ed1484da738d"></script>
     </head>
 
-    <body style="background-color: var(--bg); color: var(--text);">
-        <div class="max-w-3xl mx-auto py-6 px-4 lg:px-6">
-            <nav class="fade-in fade-in-1 flex flex-col sm:flex-row sm:justify-between sm:items-center w-full select-none py-4 gap-4">
-                <a href="/" class="font-semibold text-3xl text-center sm:text-left" style="color: var(--accent);">fool.ltd</a>
+    <body class="min-h-screen bg-neutral-50 text-neutral-800 antialiased transition-colors dark:bg-neutral-950 dark:text-neutral-300">
+        <div class="mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-6 lg:px-6">
+            <nav class="fade-in fade-in-1 flex w-full select-none flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <a href="/" class="glow-hover text-center text-lg font-bold text-neutral-900 transition-colors hover:text-neutral-500 dark:text-neutral-100 dark:hover:text-neutral-400 sm:text-left">fool.ltd</a>
                 <div class="hidden md:block">
-                    <NowPlaying />
+                    <NowPlaying variant="nav" />
                 </div>
-                <div class="flex items-center justify-center sm:justify-start gap-6">
-                    <a href="/" class="text-xl font-bold hidden sm:block transition-colors" style="color: var(--text);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">HOME</a>
-                    <a href="/blog" class="text-xl font-bold transition-colors" style="color: var(--text);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">BLOG</a>
+                <div class="flex items-center justify-center gap-4 text-sm sm:justify-start">
+                    <a href="/" class="glow-hover hidden text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100 sm:block">[home]</a>
+                    <a href="/blog" class="glow-hover text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">[blog]</a>
+                    <a href="/rss.xml" class="glow-hover text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">[rss]</a>
                     <ThemeToggle />
                 </div>
             </nav>
 
-            <div class="fade-in fade-in-2">
+            <div class="fade-in fade-in-2 flex flex-1 flex-col">
                 <slot />
             </div>
 
+            <footer class="select-none py-6 text-center text-xs text-neutral-400 dark:text-neutral-600">
+                &copy; {new Date().getFullYear()} jester@fool.ltd &mdash; live on the edge
+            </footer>
         </div>
         <Analytics />
     </body>
 </html>
-
-
-
-
