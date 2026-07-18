@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import NowPlaying from '../components/NowPlaying.astro';
+import FriendsRoulette from '../components/FriendsRoulette.astro';
 import status from '../data/status.json';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -34,7 +35,7 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
 ░▒▓█▓▒░      ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓████████▓▒░`;
 ---
 
-<header data-pagefind-ignore class="flex flex-1 flex-col items-center justify-center py-10">
+<header data-pagefind-ignore class="flex flex-1 flex-col items-center pb-10 pt-4">
 
     <!-- bios / release-info panel -->
     <div class="w-full max-w-xl border border-neutral-300 bg-neutral-100/60 text-xs dark:border-neutral-700 dark:bg-neutral-900/60">
@@ -75,7 +76,7 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
             </div>
             <div class="flex flex-1 items-baseline gap-2 px-3 py-2">
-                <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Total Posts</span>
+                <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400 sm:w-auto">Total Posts</span>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
                 <a href="/blog" title="all posts" class="glow-hover min-w-0 flex-1 truncate text-neutral-800 no-underline transition-colors hover:text-neutral-500 dark:text-neutral-200 dark:hover:text-neutral-400">{posts.length}</a>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
@@ -91,7 +92,7 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
             </div>
             <div class="flex flex-1 items-baseline gap-2 px-3 py-2">
-                <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Task</span>
+                <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400 sm:w-auto">Task</span>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
                 <span class="min-w-0 flex-1 truncate text-neutral-800 dark:text-neutral-200">{status.current_task}</span>
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
@@ -127,9 +128,10 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
         </div>
 
         <!-- links row with svg icons in the brackets -->
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
-            <span class="shrink-0 text-neutral-600 dark:text-neutral-400">Links</span>
+        <div class="flex items-start gap-2 border-b border-neutral-300 px-3 py-2 dark:border-neutral-700">
+            <span class="w-24 shrink-0 text-neutral-600 dark:text-neutral-400 sm:w-auto">Links</span>
 
+            <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-1">
             <a href="mailto:jester@fool.ltd" class="group glow-hover inline-flex items-center gap-1 text-neutral-500 no-underline transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
                 <span class="select-none text-neutral-400 dark:text-neutral-600">[</span>
                 <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -169,11 +171,12 @@ const ascii = `░▒▓████████▓▒░▒▓█████�
                 <span class="select-none text-neutral-400 dark:text-neutral-600">]</span>
                 RSS
             </a>
+            </div>
         </div>
 
         <!-- bottom notice -->
-        <div class="px-3 py-2 text-center text-neutral-500">
-            writing on my <a href="/blog" class="text-neutral-700 underline decoration-dotted underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100">blog</a>
+        <div class="flex flex-col items-center gap-1 px-3 py-2 text-center text-neutral-500">
+            <FriendsRoulette />
         </div>
     </div>
 
