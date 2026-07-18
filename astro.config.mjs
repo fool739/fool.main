@@ -7,7 +7,10 @@ export default defineConfig({
     integrations: [tailwind(), pagefind()],
     markdown: {
         shikiConfig: {
-            theme: 'monokai',
+            themes: {
+                light: 'github-light-default',
+                dark: 'github-dark-default'
+            },
             wrap: true
         }
     }

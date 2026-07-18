@@ -2,41 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    :root {
-        --bg: #FEFAE8;
-        --bg-card: #FDF5D6;
-        --bg-card-hover: #FAF0C4;
-        --text: #2C1A00;
-        --text-muted: #7A5C3A;
-        --border: #D4B896;
-        --border-hover: #B8925A;
-        --accent: #C97B2A;
-        --accent-hover: #A86220;
-        background-color: var(--bg);
-        color: var(--text);
-    }
-
-    :root.dark {
-        --bg: #161009;
-        --bg-card: #1E1610;
-        --bg-card-hover: #261E14;
-        --text: #F0E0C0;
-        --text-muted: #A08060;
-        --border: #3D2E1A;
-        --border-hover: #6B4E2A;
-        --accent: #D4943A;
-        --accent-hover: #E8A84A;
-        background-color: var(--bg);
-        color: var(--text);
-    }
-}
-
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+@layer base {
+    ::selection {
+        @apply bg-neutral-800 text-neutral-50;
+    }
+
+    .dark ::selection {
+        @apply bg-neutral-200 text-neutral-900;
+    }
+}
+
+/* Dual shiki themes: dark mode swaps to the dark palette */
+.dark .astro-code,
+.dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
 }
 
 /* Fade-in animation */
@@ -61,3 +49,13 @@ html, body {
 .fade-in-4 { animation-delay: 0.26s; }
 .fade-in-5 { animation-delay: 0.33s; }
 .fade-in-6 { animation-delay: 0.40s; }
+
+/* Blinking cursor */
+@keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+    animation: blink 1.1s steps(1) infinite;
+}

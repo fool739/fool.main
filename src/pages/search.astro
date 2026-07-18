@@ -6,18 +6,17 @@ const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhos
 ---
 
 <Base>
-    <div class="px-4 mt-10 mb-6 flex items-center justify-between">
-        <h1 class="text-2xl font-bold" style="color: var(--text);">search</h1>
-        <a href="/blog" class="text-md transition-colors"
-            style="color: var(--text-muted);"
-            onmouseover="this.style.color='var(--accent)'"
-            onmouseout="this.style.color='var(--text-muted)'">
-            ← blog
-        </a>
-    </div>
+    <div class="mt-6 flex flex-1 flex-col border border-neutral-200 dark:border-neutral-800">
+        <div class="flex items-center justify-between border-b border-neutral-200 px-3 py-2 text-xs dark:border-neutral-800">
+            <span class="font-bold text-neutral-700 dark:text-neutral-300">fool.ltd <span class="text-neutral-400 dark:text-neutral-600">/search</span></span>
+            <a href="/blog" class="text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
+                ../ blog
+            </a>
+        </div>
 
-    <div class="px-4">
-        <div data-pagefind-ui data-bundle-path={bundlePath}></div>
+        <div class="p-4 sm:p-6">
+            <div data-pagefind-ui data-bundle-path={bundlePath}></div>
+        </div>
     </div>
 </Base>
 
@@ -44,25 +43,25 @@ const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhos
 </script>
 
 <style>
-    /* Pagefind token variables */
+    /* Pagefind token variables — all values pulled from the Tailwind palette */
     :global([data-pagefind-ui]) {
         font-family: inherit !important;
         --pagefind-ui-scale: 1;
-        --pagefind-ui-primary: #C97B2A;
-        --pagefind-ui-text: #2C1A00;
+        --pagefind-ui-primary: theme('colors.neutral.900');
+        --pagefind-ui-text: theme('colors.neutral.800');
         --pagefind-ui-background: transparent;
-        --pagefind-ui-border: #D4B896;
+        --pagefind-ui-border: theme('colors.neutral.200');
         --pagefind-ui-border-radius: 0;
-        --pagefind-ui-tag: #F0E4C0;
+        --pagefind-ui-tag: theme('colors.neutral.200');
         --pagefind-ui-font: inherit;
     }
 
     :global(.dark [data-pagefind-ui]) {
-        --pagefind-ui-primary: #D4943A;
-        --pagefind-ui-text: #F0E0C0;
+        --pagefind-ui-primary: theme('colors.neutral.100');
+        --pagefind-ui-text: theme('colors.neutral.300');
         --pagefind-ui-background: transparent;
-        --pagefind-ui-border: #3D2E1A;
-        --pagefind-ui-tag: #261E14;
+        --pagefind-ui-border: theme('colors.neutral.800');
+        --pagefind-ui-tag: theme('colors.neutral.800');
     }
 
     /* All elements inherit font, no radius */
@@ -71,25 +70,28 @@ const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhos
         border-radius: 0 !important;
     }
 
-    /* Hide pagefind's own search icon — we don't fight it here */
-    :global([data-pagefind-ui] .pagefind-ui__search-icon) {
+    /* Hide pagefind's own search icon (rendered as a ::before on the form) */
+    :global([data-pagefind-ui] .pagefind-ui__search-icon),
+    :global([data-pagefind-ui] .pagefind-ui__form::before) {
         display: none !important;
+        content: none !important;
+        background-image: none !important;
     }
 
     /* Input */
     :global([data-pagefind-ui] input[type="text"]) {
         width: 100% !important;
-        padding: 0.75rem 1rem 0.75rem 3.5rem !important;
-        font-size: 1rem !important;
-        border: 1px solid var(--border) !important;
-        background: var(--bg-card) !important;
-        color: var(--text) !important;
+        padding: 0.65rem 1rem !important;
+        font-size: 0.9rem !important;
+        border: 1px solid var(--pagefind-ui-border) !important;
+        background: transparent !important;
+        background-image: none !important;
+        color: var(--pagefind-ui-text) !important;
         transition: border-color 0.2s ease !important;
         box-sizing: border-box !important;
         margin: 0 !important;
     }
 
-    /* Kill any form wrapper margin/padding pagefind adds */
     :global([data-pagefind-ui] form) {
         margin: 0 !important;
         padding: 0 !important;
@@ -97,35 +99,31 @@ const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhos
 
     :global([data-pagefind-ui] input[type="text"]:focus) {
         outline: none !important;
-        border-color: #C97B2A !important;
+        border-color: theme('colors.neutral.500') !important;
         box-shadow: none !important;
     }
 
-    :global(.dark [data-pagefind-ui] input[type="text"]:focus) {
-        border-color: #D4943A !important;
-    }
-
     :global([data-pagefind-ui] input[type="text"]::placeholder) {
-        color: var(--text-muted) !important;
+        color: theme('colors.neutral.400') !important;
         opacity: 1 !important;
     }
 
     /* Clear button */
     :global([data-pagefind-ui] .pagefind-ui__search-clear) {
         background: transparent !important;
-        color: var(--text-muted) !important;
+        color: theme('colors.neutral.400') !important;
         border: none !important;
         padding: 0 0.75rem !important;
     }
 
     :global([data-pagefind-ui] .pagefind-ui__search-clear:hover) {
-        color: var(--accent) !important;
+        color: var(--pagefind-ui-primary) !important;
     }
 
     /* Result count message */
     :global([data-pagefind-ui] .pagefind-ui__message) {
-        color: var(--text-muted) !important;
-        font-size: 0.85rem !important;
+        color: theme('colors.neutral.500') !important;
+        font-size: 0.8rem !important;
         padding: 1rem 0 0.5rem !important;
     }
 
@@ -136,58 +134,58 @@ const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhos
 
     /* Individual result */
     :global([data-pagefind-ui] .pagefind-ui__result) {
-        border-bottom: 1px solid var(--border) !important;
-        border-left: 3px solid transparent !important;
-        padding: 1.25rem 0.75rem !important;
-        margin: 0 -0.75rem !important;
-        transition: border-left-color 0.15s ease, background 0.15s ease !important;
+        border-bottom: 1px solid var(--pagefind-ui-border) !important;
+        padding: 1.1rem 0.5rem !important;
+        margin: 0 !important;
+        transition: background 0.15s ease !important;
         list-style: none !important;
     }
 
     :global([data-pagefind-ui] .pagefind-ui__result:hover) {
-        border-left-color: #C97B2A !important;
-        background: rgba(201,123,42,0.05) !important;
+        background: theme('colors.neutral.200 / 40%') !important;
     }
 
     :global(.dark [data-pagefind-ui] .pagefind-ui__result:hover) {
-        border-left-color: #D4943A !important;
-        background: rgba(212,148,58,0.05) !important;
+        background: theme('colors.neutral.800 / 30%') !important;
     }
 
     /* Result link / title */
     :global([data-pagefind-ui] .pagefind-ui__result-link) {
-        font-size: 1.1rem !important;
+        font-size: 0.95rem !important;
         font-weight: bold !important;
-        color: var(--text) !important;
+        color: var(--pagefind-ui-text) !important;
         text-decoration: none !important;
     }
 
     :global([data-pagefind-ui] .pagefind-ui__result-link:hover) {
-        color: var(--accent) !important;
+        color: var(--pagefind-ui-primary) !important;
+        text-decoration: underline dotted !important;
+        text-underline-offset: 4px !important;
     }
 
     /* Excerpt */
     :global([data-pagefind-ui] .pagefind-ui__result-excerpt) {
-        color: var(--text-muted) !important;
-        font-size: 0.9rem !important;
+        color: theme('colors.neutral.500') !important;
+        font-size: 0.8rem !important;
         margin-top: 0.35rem !important;
         line-height: 1.6 !important;
     }
 
     /* Highlight marks */
     :global([data-pagefind-ui] mark) {
-        background: rgba(201,123,42,0.25) !important;
-        color: inherit !important;
+        background: theme('colors.neutral.300') !important;
+        color: theme('colors.neutral.900') !important;
         padding: 0 2px !important;
     }
 
     :global(.dark [data-pagefind-ui] mark) {
-        background: rgba(212,148,58,0.3) !important;
+        background: theme('colors.neutral.700') !important;
+        color: theme('colors.neutral.100') !important;
     }
 
     /* Sub-results */
     :global([data-pagefind-ui] .pagefind-ui__result-nested) {
-        border-left: 2px solid var(--border) !important;
+        border-left: 1px solid var(--pagefind-ui-border) !important;
         margin-left: 1rem !important;
         padding-left: 0.75rem !important;
         margin-top: 0.5rem !important;
@@ -197,19 +195,19 @@ const bundlePath = new URL("pagefind/", import.meta.env.SITE || "http://localhos
     :global([data-pagefind-ui] .pagefind-ui__button) {
         display: block !important;
         margin: 2rem auto 0 !important;
-        padding: 0.6rem 2rem !important;
-        border: 1px solid var(--border) !important;
-        background: var(--bg-card) !important;
-        color: var(--text) !important;
+        padding: 0.5rem 2rem !important;
+        border: 1px solid var(--pagefind-ui-border) !important;
+        background: transparent !important;
+        color: var(--pagefind-ui-text) !important;
         cursor: pointer !important;
         font-family: inherit !important;
-        font-size: 0.9rem !important;
+        font-size: 0.85rem !important;
         transition: border-color 0.2s, color 0.2s !important;
     }
 
     :global([data-pagefind-ui] .pagefind-ui__button:hover) {
-        border-color: var(--accent) !important;
-        color: var(--accent) !important;
+        border-color: theme('colors.neutral.500') !important;
+        color: var(--pagefind-ui-primary) !important;
     }
 
     :global([data-pagefind-ui-drawer]) {

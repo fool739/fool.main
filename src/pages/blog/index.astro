@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/base.astro';
+import BlogShell from '../../components/BlogShell.astro';
 import Tag from '../../components/Tag.astro';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -11,93 +12,83 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Base>
-    <header class="px-4">
-        <p data-pagefind-ignore class="text-lg leading-relaxed mt-10 mb-8">writings without restrain :]</p>
-    </header>
+    <BlogShell activeSlug={null}>
+        <header class="mb-6">
+            <h1 class="text-lg font-bold text-neutral-900 dark:text-neutral-100"># blog</h1>
+            <p data-pagefind-ignore class="mt-1 text-sm text-neutral-500">writings without restrain :]</p>
+        </header>
 
-    <!-- Tag filter + search link -->
-    <div class="px-4 mb-6 flex items-center justify-between gap-4">
-        <!-- Tag pills -->
-        <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm" id="tag-filters">
-            <button class="tag-pill-filter font-bold transition-colors active" data-tag=""
-                style="color: var(--accent);"
-                onmouseover="if(!this.classList.contains('active')) this.style.color='var(--accent)'"
-                onmouseout="if(!this.classList.contains('active')) this.style.color='var(--text-muted)'">
-                all
-            </button>
-            {allTags.map(tag => (
-                <button class="tag-pill-filter transition-colors" data-tag={tag}
-                    style="color: var(--text-muted);"
-                    onmouseover="if(!this.classList.contains('active')) this.style.color='var(--accent)'"
-                    onmouseout="if(!this.classList.contains('active')) this.style.color='var(--text-muted)'">
-                    {tag}
+        <!-- Tag filter + search link -->
+        <div data-pagefind-ignore class="mb-4 flex items-center justify-between gap-4 text-xs">
+            <div class="flex flex-wrap gap-x-3 gap-y-1" id="tag-filters">
+                <button class="tag-pill-filter active font-bold text-neutral-900 transition-colors dark:text-neutral-100" data-tag="">
+                    [all]
                 </button>
-            ))}
+                {allTags.map(tag => (
+                    <button class="tag-pill-filter text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100" data-tag={tag}>
+                        [{tag}]
+                    </button>
+                ))}
+            </div>
+
+            <a href="/search" class="shrink-0 text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
+                [search]
+            </a>
         </div>
 
-        <!-- Search link -->
-        <a href="/search" class="shrink-0 flex items-center gap-1.5 text-sm transition-colors"
-            style="color: var(--text-muted);"
-            onmouseover="this.style.color='var(--accent)'"
-            onmouseout="this.style.color='var(--text-muted)'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-            search
-        </a>
-    </div>
-
-    <!-- Post list -->
-    <div id="posts-container" class="px-4 flex flex-col" style="border-top: 1px solid var(--border);">
-        {posts.map((post, i) => (
-            <a href={`/blog/${post.id.replace(/\.[^.]+$/, '')}`}
-               class="block no-underline post-card fade-in py-5 px-3 -mx-3 transition-all duration-200"
-               style={`animation-delay: ${0.05 + i * 0.07}s; border-bottom: 1px solid var(--border); border-left: 3px solid transparent;`}
-               onmouseover="this.style.borderLeftColor='var(--accent)'; this.style.backgroundColor='rgba(201,123,42,0.06)'"
-               onmouseout="this.style.borderLeftColor='transparent'; this.style.backgroundColor=''"
-               data-tags={post.data.tags.join(',')}>
-                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
-                    <h2 class="text-lg font-bold" style="color: var(--text);">
-                        {post.data.title}
-                    </h2>
-                    <div class="flex flex-wrap items-center gap-2 text-sm shrink-0">
-                        <time datetime={post.data.date.toISOString()} style="color: var(--text-muted);">
-                            {new Intl.DateTimeFormat('en-US', {
-                                month: '2-digit',
-                                day: '2-digit',
-                                year: 'numeric'
-                            }).format(post.data.date)}
-                        </time>
-                        <div class="flex flex-wrap gap-1">
-                            {post.data.tags.map(tag => (
-                                <Tag name={tag} />
-                            ))}
+        <!-- Post list -->
+        <div id="posts-container" class="flex flex-col border-t border-neutral-200 dark:border-neutral-800">
+            {posts.length === 0 && (
+                <p class="py-6 text-center text-xs italic text-neutral-400 dark:text-neutral-600">nothing here yet_</p>
+            )}
+            {posts.map((post, i) => (
+                <a href={`/blog/${post.id.replace(/\.[^.]+$/, '')}`}
+                   class="post-card fade-in block border-b border-neutral-200 py-4 no-underline transition-colors hover:bg-neutral-200/40 dark:border-neutral-800 dark:hover:bg-neutral-800/30"
+                   style={`animation-delay: ${0.05 + i * 0.07}s;`}
+                   data-tags={post.data.tags.join(',')}>
+                    <div class="flex flex-col gap-1 px-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                        <h2 class="text-sm font-bold text-neutral-800 dark:text-neutral-200">
+                            {post.data.title}
+                        </h2>
+                        <div class="flex shrink-0 flex-wrap items-center gap-2 text-xs">
+                            <time datetime={post.data.date.toISOString()} class="text-neutral-400 dark:text-neutral-600">
+                                {new Intl.DateTimeFormat('en-US', {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: 'numeric'
+                                }).format(post.data.date)}
+                            </time>
+                            <div class="flex flex-wrap gap-1.5">
+                                {post.data.tags.map(tag => (
+                                    <Tag name={tag} />
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <p class="mt-1 text-sm line-clamp-1" style="color: var(--text-muted);">
-                    {post.data.description}
-                </p>
-            </a>
-        ))}
-    </div>
+                    <p class="mt-1 line-clamp-1 px-2 text-xs text-neutral-500">
+                        {post.data.description}
+                    </p>
+                </a>
+            ))}
+        </div>
+    </BlogShell>
 </Base>
 
 <script>
     const filters = document.querySelectorAll<HTMLButtonElement>('.tag-pill-filter');
     const posts   = document.querySelectorAll<HTMLElement>('.post-card');
 
+    const activeClasses = ['active', 'font-bold', 'text-neutral-900', 'dark:text-neutral-100'];
+    const idleClasses   = ['text-neutral-500', 'hover:text-neutral-900', 'dark:hover:text-neutral-100'];
+
     filters.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Update active state
             filters.forEach(b => {
-                b.classList.remove('active');
-                b.style.color = 'var(--text-muted)';
-                (b as HTMLElement).style.fontWeight = '';
+                b.classList.remove(...activeClasses);
+                b.classList.add(...idleClasses);
             });
-            btn.classList.add('active');
-            btn.style.color = 'var(--accent)';
-            btn.style.fontWeight = 'bold';
+            btn.classList.add(...activeClasses);
+            btn.classList.remove(...idleClasses);
 
             const selected = btn.dataset.tag || '';
             posts.forEach(post => {
