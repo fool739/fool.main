@@ -19,8 +19,7 @@ But some days it's so hard. So, so, hard. But I know I can do it, because I've d
 And in my head, all I repeat over and over is that one day, the sky will be mine.
 I will fly with these broken wings.
 
-
-                                                                  _______
+```                                                                   _______
                                                                 LLLLLLLLLLL
                                                             __LLLLLLLLLLLLLL
                                                            LLLLLLLLLLLLLLLLL
@@ -65,4 +64,5 @@ LLLLLLLLLLLLLLLL_  __L       _L  LLLLLLLL      LLL_ LLLLLLLLLLLLLLLLLLLLL
                            LLLLLLLLLLLLLLLLLLLLLL
                             ~LLLLLLLLLLLLLLLLL~~
                                LLLLLLLLLLLLL
-                                 ~~~~~~~~~
+                                 ~~~~~~~~~ 
+```
